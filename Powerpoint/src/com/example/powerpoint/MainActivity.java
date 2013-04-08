@@ -1,6 +1,7 @@
 package com.example.powerpoint;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import com.samsung.samm.common.SAMMLibConstants;
 import com.samsung.samm.common.SOptionPlay;
@@ -10,11 +11,17 @@ import com.samsung.spensdk.applistener.AnimationProcessListener;
 import com.samsung.spensdk.applistener.SCanvasInitializeListener;
 import com.samsung.spensdk.applistener.SPenTouchListener;
 
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -43,6 +50,8 @@ public class MainActivity extends Activity {
     private SCanvasView mSCanvas;
     private int animationSpeed;
     private SOptionSCanvas options;
+    
+    Bitmap bitmap;
     
     String saveFile;
     
@@ -172,9 +181,62 @@ public class MainActivity extends Activity {
             case R.id.action6:
                 pauseResume();
                 return true;
+            case R.id.action7:
+            	openGallery();
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    public void openGallery()
+    {
+    	Intent intent = new Intent(Intent.ACTION_PICK,
+    			MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    	
+    	final int IMG_REQ_CODE = 1234;
+    	
+    	startActivityForResult(intent, IMG_REQ_CODE);
+    }
+    
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+    	super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) 
+        {
+        	switch(requestCode)
+        	{
+        		case 1234:
+        			Toast.makeText(MainActivity.this, "Return", Toast.LENGTH_SHORT).show();
+        			Uri pictureUri = data.getData();
+    
+        			 try {
+        			  bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
+//        			  setContentView(new MyView(this));
+        			  mCanvasContainer.addView(new MyView(this));
+        			 } catch (FileNotFoundException e) {
+        			  // TODO Auto-generated catch block
+        			  e.printStackTrace();
+        			 }
+        			break;
+        	}
+        }
+    }
+    
+    class MyView extends View
+    {
+
+		public MyView(Context context) 
+		{
+			super(context);
+		}
+		
+		@Override
+		protected void onDraw(Canvas canvas) 
+		{
+			canvas.drawBitmap(bitmap, 50, 50, null);
+		}
+    	
     }
 
     //Need to find a way to redo() after previewing the animation. Perhaps keep

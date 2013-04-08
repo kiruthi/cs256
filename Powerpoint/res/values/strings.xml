@@ -8,5 +8,6 @@
     <string name="action4">Slower</string>
     <string name="action5">Faster</string>
     <string name="action6">Pause</string>
+    <string name="action7">Image</string>
 
 </resources>
