@@ -8,6 +8,7 @@ import com.samsung.samm.common.SOptionSCanvas;
 import com.samsung.spensdk.SCanvasView;
 import com.samsung.spensdk.applistener.AnimationProcessListener;
 import com.samsung.spensdk.applistener.SCanvasInitializeListener;
+import com.samsung.spensdk.applistener.SPenTouchListener;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -99,6 +100,41 @@ public class MainActivity extends Activity {
             }
         });
         mSCanvas.setTitle("SPen PowerPoint App");
+        
+        mSCanvas.setSPenTouchListener(new SPenTouchListener(){
+
+			@Override
+			public void onTouchButtonDown(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				Toast.makeText(MainActivity.this, "Menu To Be Added", Toast.LENGTH_SHORT).show();
+				
+			}
+
+			@Override
+			public void onTouchButtonUp(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public boolean onTouchFinger(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean onTouchPen(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean onTouchPenEraser(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+        	
+        });
         
         mCanvasContainer.addView(mSCanvas);
         
