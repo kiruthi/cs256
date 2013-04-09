@@ -123,14 +123,14 @@ public class MainActivity extends Activity {
 			@Override
 			public void onTouchButtonDown(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
-				Toast.makeText(MainActivity.this, "Menu To Be Added", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(MainActivity.this, "Menu To Be Added", Toast.LENGTH_SHORT).show();
 				
 			}
 
 			@Override
 			public void onTouchButtonUp(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
-			    Toast.makeText(MainActivity.this, "On Touch Button Up", Toast.LENGTH_SHORT).show();
+			    //Toast.makeText(MainActivity.this, "On Touch Button Up", Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
@@ -150,7 +150,7 @@ public class MainActivity extends Activity {
 			@Override
 			public boolean onTouchPenEraser(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
-			    Toast.makeText(MainActivity.this, "On Touch Pen Eraser", Toast.LENGTH_SHORT).show();
+			    //Toast.makeText(MainActivity.this, "On Touch Pen Eraser", Toast.LENGTH_SHORT).show();
 				return false;
 			}
         	
@@ -170,7 +170,7 @@ public class MainActivity extends Activity {
             
             @Override
             public void onHoverButtonUp(View view, MotionEvent event) {
-                Toast.makeText(MainActivity.this, "Hovering with Button Up", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Hovering with Button Up", Toast.LENGTH_SHORT).show();
             }
         });
         
