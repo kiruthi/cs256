@@ -9,6 +9,7 @@ import com.samsung.samm.common.SOptionSCanvas;
 import com.samsung.spensdk.SCanvasView;
 import com.samsung.spensdk.applistener.AnimationProcessListener;
 import com.samsung.spensdk.applistener.SCanvasInitializeListener;
+import com.samsung.spensdk.applistener.SPenHoverListener;
 import com.samsung.spensdk.applistener.SPenTouchListener;
 
 import android.net.Uri;
@@ -103,6 +104,8 @@ public class MainActivity extends Activity {
                 //the percentage of the animation completed.
             }
         });
+        
+        mSCanvas.setTitle("SPen PowerPoint App");
         mSCanvas.setOnTouchListener(new View.OnTouchListener() {      
             @Override
             public boolean onTouch(final View v, final MotionEvent event) {
@@ -115,8 +118,6 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
-        mSCanvas.setTitle("SPen PowerPoint App");
-        
         mSCanvas.setSPenTouchListener(new SPenTouchListener(){
 
 			@Override
@@ -129,36 +130,56 @@ public class MainActivity extends Activity {
 			@Override
 			public void onTouchButtonUp(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
-				
+			    Toast.makeText(MainActivity.this, "On Touch Button Up", Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
 			public boolean onTouchFinger(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
+			    //Toast.makeText(MainActivity.this, "On Touch Finger", Toast.LENGTH_SHORT).show();
 				return false;
 			}
 
 			@Override
 			public boolean onTouchPen(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
+			    //Toast.makeText(MainActivity.this, "On Touch Pen", Toast.LENGTH_SHORT).show();
 				return false;
 			}
 
 			@Override
 			public boolean onTouchPenEraser(View arg0, MotionEvent arg1) {
 				// TODO Auto-generated method stub
+			    Toast.makeText(MainActivity.this, "On Touch Pen Eraser", Toast.LENGTH_SHORT).show();
 				return false;
 			}
         	
         });
         
+        mSCanvas.setSPenHoverListener(new SPenHoverListener() {
+            @Override
+            public boolean onHover(View view, MotionEvent event) {
+                //Toast.makeText(MainActivity.this, "Hovering", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            @Override
+            public void onHoverButtonDown(View view, MotionEvent event) {
+                Toast.makeText(MainActivity.this, "Hovering with Button Down", Toast.LENGTH_SHORT).show();
+            }
+            
+            @Override
+            public void onHoverButtonUp(View view, MotionEvent event) {
+                Toast.makeText(MainActivity.this, "Hovering with Button Up", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
         mCanvasContainer.addView(mSCanvas);
         
-        File folder = getBaseContext().getCacheDir();
-        //File folder = getBaseContext().getDir("folder", Context.MODE_PRIVATE);
-        String folderPath = folder.getAbsolutePath();
-        System.out.println(folderPath);
-        saveFile = folderPath + "/" + "SAMM.data";
+        //File folder = getBaseContext().getCacheDir();
+        //String folderPath = folder.getAbsolutePath();
+        //System.out.println(folderPath);
+        //saveFile = folderPath + "/" + "SAMM.data";
     }
 
     @Override
@@ -274,12 +295,12 @@ public class MainActivity extends Activity {
     public void previewAnimation() {
         //This line ensures that the animation plays only up to the current state.
         //It will also wipe any redo() history.
-        //mSCanvas.loadSAMMData(mSCanvas.saveSAMMData());
+        mSCanvas.loadSAMMData(mSCanvas.saveSAMMData());
        
         
-        System.out.println(saveFile);
-        mSCanvas.saveSAMMFile(saveFile);
-        mSCanvas.loadSAMMFile(saveFile, true, true);
+        //System.out.println(saveFile);
+        //mSCanvas.saveSAMMFile(saveFile);
+        //mSCanvas.loadSAMMFile(saveFile, true, true);
         
         mSCanvas.setAnimationMode(true);
         mSCanvas.setAnimationSpeed(animationSpeed);
