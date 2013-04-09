@@ -26,6 +26,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +54,8 @@ public class MainActivity extends Activity {
     private int animationSpeed;
     private SOptionSCanvas options;
     
+    InputMethodManager imm;
+    
     Bitmap bitmap;
     
     String saveFile;
@@ -59,6 +64,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        imm =  (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
         setContentView(R.layout.activity_main);
@@ -184,13 +191,30 @@ public class MainActivity extends Activity {
             case R.id.action7:
             	openGallery();
             	return true;
+            case R.id.action8:
+            	addText();
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
     
+    public void addText()
+    {
+    	EditText text = new EditText(this);
+    	mCanvasContainer.addView(text);
+    	
+    	text.requestFocus();
+    	
+    	imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
     public void openGallery()
     {
+    	if(imm.isAcceptingText())
+    	{
+    		imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+    	}
+    	
     	Intent intent = new Intent(Intent.ACTION_PICK,
     			MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
     	
@@ -207,13 +231,19 @@ public class MainActivity extends Activity {
         	switch(requestCode)
         	{
         		case 1234:
-        			Toast.makeText(MainActivity.this, "Return", Toast.LENGTH_SHORT).show();
+        			Toast.makeText(MainActivity.this, "Image Selected", Toast.LENGTH_SHORT).show();
         			Uri pictureUri = data.getData();
     
         			 try {
         			  bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
 //        			  setContentView(new MyView(this));
-        			  mCanvasContainer.addView(new MyView(this));
+//        			  mCanvasContainer.addView(new MyView(this));
+        			  
+        			  ImageView imgView = new ImageView(this);
+        			  imgView.setImageBitmap(bitmap);
+
+        			  mCanvasContainer.addView(imgView);
+        			  
         			 } catch (FileNotFoundException e) {
         			  // TODO Auto-generated catch block
         			  e.printStackTrace();
