@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,7 +28,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -49,6 +52,7 @@ public class MainActivity extends Activity {
     //Both of these integers are defined in SOptionPlay
     public final int SLOWEST_SPEED = 0;
     public final int FASTEST_SPEED = 3;
+    private final Context context = this;
 
     private RelativeLayout mCanvasContainer;
     private SCanvasView mSCanvas;
@@ -166,6 +170,47 @@ public class MainActivity extends Activity {
             @Override
             public void onHoverButtonDown(View view, MotionEvent event) {
                 Toast.makeText(MainActivity.this, "Hovering with Button Down", Toast.LENGTH_SHORT).show();
+            final Dialog myDialog = new Dialog(context);
+            myDialog.setCancelable(true);
+            myDialog.setTitle("Options");
+            myDialog.setContentView(R.layout.dialog_layout);
+            
+            Button textButton = (Button) myDialog.findViewById (R.id.textButton);
+            textButton.setText("Text Box");
+            textButton.setOnClickListener( new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					addText();
+					myDialog.dismiss();
+					
+				}
+            });
+            
+            Button cancelButton = (Button) myDialog.findViewById (R.id.cancelButton);
+            cancelButton.setText("Cancel");
+            cancelButton.setOnClickListener( new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					myDialog.dismiss();
+					
+				}
+            });
+            
+            Button pictureButton = (Button) myDialog.findViewById (R.id.pictureButton);
+            pictureButton.setText("Insert Picture");
+            pictureButton.setOnClickListener( new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					openGallery();
+					myDialog.dismiss();
+					
+				}
+            });
+            myDialog.show();          
+            
             }
             
             @Override
