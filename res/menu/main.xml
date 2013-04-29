@@ -48,4 +48,16 @@
         android:showAsAction="ifRoom"
         android:title="@string/action8"/>
     
+    <item
+        android:id="@+id/action9"
+        android:orderInCategory="108"
+        android:showAsAction="ifRoom"
+        android:title="@string/action9"/>
+    
+    <item
+        android:id="@+id/action10"
+        android:orderInCategory="109"
+        android:showAsAction="ifRoom"
+        android:title="@string/action10"/>
+    
 </menu>

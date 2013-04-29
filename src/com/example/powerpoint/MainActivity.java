@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import com.samsung.samm.common.SAMMLibConstants;
+import com.samsung.samm.common.SObjectImage;
 import com.samsung.samm.common.SOptionPlay;
 import com.samsung.samm.common.SOptionSCanvas;
+import com.samsung.spensdk.SCanvasConstants;
 import com.samsung.spensdk.SCanvasView;
 import com.samsung.spensdk.applistener.AnimationProcessListener;
 import com.samsung.spensdk.applistener.SCanvasInitializeListener;
@@ -16,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -24,6 +27,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -39,38 +43,27 @@ import android.widget.Toast;
 
 /**
  * This is the main activity where all the drawing and animations occur.
- * 
+ *
  * @author David Tang
  *
  */
 
-//This line is required to run the following two lines in the onCreate() method:
-//getActionBar().setDisplayShowHomeEnabled(false);
-//getActionBar().setDisplayShowTitleEnabled(false);
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+@SuppressLint("NewApi")
 public class MainActivity extends Activity {
     //Both of these integers are defined in SOptionPlay
     public final int SLOWEST_SPEED = 0;
     public final int FASTEST_SPEED = 3;
-    private final Context context = this;
-
+    
     private RelativeLayout mCanvasContainer;
     private SCanvasView mSCanvas;
     private int animationSpeed;
     private SOptionSCanvas options;
+    private String saveFile;
     
-    InputMethodManager imm;
-    
-    Bitmap bitmap;
-    
-    String saveFile;
-    
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        imm =  (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
         setContentView(R.layout.activity_main);
@@ -87,137 +80,136 @@ public class MainActivity extends Activity {
             //the options outside will result in the default behavior because the
             //option was never properly applied.
             public void onInitialized() {
+                mSCanvas.setTitle("SPen PowerPoint App");
                 mSCanvas.setOption(options);
-            }
-        }); 
-        mSCanvas.setAnimationProcessListener(new AnimationProcessListener() {
-            @Override
-            //This method runs immediately after the animation finishes playing
-            public void onPlayComplete() {
-                mSCanvas.setAnimationMode(false); //Enable drawing again
-            }
-
-            @Override
-            //This method runs after each stroke is completed. As of this time
-            //I'm not sure how adding other drawable objects to the SCanvas effects
-            //the progress.
-            public void onChangeProgress(int nProgress) {
-                //We can later use this section to perhaps keep track of a playback animation
-                //if a user makes a mistake and needs to continue drawing beginning at a past
-                //state. The parameter is supposed to be a number between 0 and 100 to signify
-                //the percentage of the animation completed.
-            }
-        });
-        
-        mSCanvas.setTitle("SPen PowerPoint App");
-        mSCanvas.setOnTouchListener(new View.OnTouchListener() {      
-            @Override
-            public boolean onTouch(final View v, final MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    //We might be able to make this useful later.
+                mSCanvas.setAnimationProcessListener(new AnimationProcessListener() {
+                    @Override
+                    //This method runs immediately after the animation finishes playing
+                    public void onPlayComplete() {
+                        mSCanvas.setAnimationMode(false); //Enable drawing again
+                    }
                     
-                    //System.out.println("OBJECTLIST" + mSCanvas.getSObjectList(false));
-                    Toast.makeText(MainActivity.this, "Stroke completed.", Toast.LENGTH_SHORT).show(); //To test stroke completion
-                }
-                return false;
+                    @Override
+                    //This method runs after each stroke is completed. As of this time
+                    //I'm not sure how adding other drawable objects to the SCanvas effects
+                    //the progress.
+                    public void onChangeProgress(int nProgress) {
+                        //We can later use this section to perhaps keep track of a playback animation
+                        //if a user makes a mistake and needs to continue drawing beginning at a past
+                        //state. The parameter is supposed to be a number between 0 and 100 to signify
+                        //the percentage of the animation completed.
+                    }
+                });
+                mSCanvas.setSPenTouchListener(new SPenTouchListener() {
+                    @Override
+                    public void onTouchButtonDown(View arg0, MotionEvent arg1) {
+                        
+                    }
+                    
+                    @Override
+                    public void onTouchButtonUp(View arg0, MotionEvent arg1) {
+                        // TODO Auto-generated method stub
+                        //Toast.makeText(MainActivity.this, "On Touch Button Up", Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    @Override
+                    public boolean onTouchFinger(View arg0, MotionEvent arg1) {
+                        // TODO Auto-generated method stub
+                        //Toast.makeText(MainActivity.this, "On Touch Finger", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    
+                    @Override
+                    public boolean onTouchPen(View arg0, MotionEvent arg1) {
+                        
+                        return false;
+                    }
+                    
+                    @Override
+                    public boolean onTouchPenEraser(View arg0, MotionEvent arg1) {
+                        // TODO Auto-generated method stub
+                        //Toast.makeText(MainActivity.this, "On Touch Pen Eraser", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    
+                });
+                
+                mSCanvas.setSPenHoverListener(new SPenHoverListener() {
+                    @Override
+                    public boolean onHover(View view, MotionEvent event) {
+                        //Toast.makeText(MainActivity.this, "Hovering", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    
+                    @Override
+                    public void onHoverButtonDown(View view, MotionEvent event) {
+                        final Dialog myDialog = new Dialog(MainActivity.this);
+                        myDialog.setCancelable(true);
+                        myDialog.setTitle("Options");
+                        myDialog.setContentView(R.layout.dialog_layout);
+                        
+                        Button textButton = (Button) myDialog.findViewById (R.id.textButton);
+                        textButton.setText("Text Mode");
+                        textButton.setOnClickListener( new OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_TEXT);
+                                myDialog.dismiss();
+                            }
+                        });
+                        
+                        Button drawButton = (Button) myDialog.findViewById (R.id.drawButton);
+                        drawButton.setText("Pen Mode");
+                        drawButton.setOnClickListener( new OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
+                                myDialog.dismiss();
+                            }
+                        });
+                        
+                        Button eraseButton = (Button) myDialog.findViewById (R.id.eraseButton);
+                        eraseButton.setText("Eraser Mode");
+                        eraseButton.setOnClickListener( new OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
+                                myDialog.dismiss();
+                            }
+                        });
+                        
+                        Button cancelButton = (Button) myDialog.findViewById (R.id.cancelButton);
+                        cancelButton.setText("Cancel");
+                        cancelButton.setOnClickListener( new OnClickListener() {
+
+                            @Override
+                            public void onClick(View arg0) {
+                                myDialog.dismiss();
+                            }
+                        });
+                        
+                        Button pictureButton = (Button) myDialog.findViewById (R.id.pictureButton);
+                        pictureButton.setText("Insert Picture");
+                        pictureButton.setOnClickListener( new OnClickListener() {
+
+                            @Override
+                            public void onClick(View arg0) {
+                                openGallery();
+                                myDialog.dismiss();
+                            }
+                        });
+                        
+                        myDialog.show();     
+                    }
+                    
+                    @Override
+                    public void onHoverButtonUp(View view, MotionEvent event) {
+
+                    }
+                });
             }
-        });
-        mSCanvas.setSPenTouchListener(new SPenTouchListener(){
-
-			@Override
-			public void onTouchButtonDown(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				//Toast.makeText(MainActivity.this, "Menu To Be Added", Toast.LENGTH_SHORT).show();
-				
-			}
-
-			@Override
-			public void onTouchButtonUp(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-			    //Toast.makeText(MainActivity.this, "On Touch Button Up", Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public boolean onTouchFinger(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-			    //Toast.makeText(MainActivity.this, "On Touch Finger", Toast.LENGTH_SHORT).show();
-				return false;
-			}
-
-			@Override
-			public boolean onTouchPen(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-			    //Toast.makeText(MainActivity.this, "On Touch Pen", Toast.LENGTH_SHORT).show();
-				return false;
-			}
-
-			@Override
-			public boolean onTouchPenEraser(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-			    //Toast.makeText(MainActivity.this, "On Touch Pen Eraser", Toast.LENGTH_SHORT).show();
-				return false;
-			}
-        	
         });
         
-        mSCanvas.setSPenHoverListener(new SPenHoverListener() {
-            @Override
-            public boolean onHover(View view, MotionEvent event) {
-                //Toast.makeText(MainActivity.this, "Hovering", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-            @Override
-            public void onHoverButtonDown(View view, MotionEvent event) {
-                Toast.makeText(MainActivity.this, "Hovering with Button Down", Toast.LENGTH_SHORT).show();
-            final Dialog myDialog = new Dialog(context);
-            myDialog.setCancelable(true);
-            myDialog.setTitle("Options");
-            myDialog.setContentView(R.layout.dialog_layout);
-            
-            Button textButton = (Button) myDialog.findViewById (R.id.textButton);
-            textButton.setText("Text Box");
-            textButton.setOnClickListener( new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					addText();
-					myDialog.dismiss();
-					
-				}
-            });
-            
-            Button cancelButton = (Button) myDialog.findViewById (R.id.cancelButton);
-            cancelButton.setText("Cancel");
-            cancelButton.setOnClickListener( new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					myDialog.dismiss();
-					
-				}
-            });
-            
-            Button pictureButton = (Button) myDialog.findViewById (R.id.pictureButton);
-            pictureButton.setText("Insert Picture");
-            pictureButton.setOnClickListener( new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					openGallery();
-					myDialog.dismiss();
-					
-				}
-            });
-            myDialog.show();          
-            
-            }
-            
-            @Override
-            public void onHoverButtonUp(View view, MotionEvent event) {
-                //Toast.makeText(MainActivity.this, "Hovering with Button Up", Toast.LENGTH_SHORT).show();
-            }
-        });
         
         mCanvasContainer.addView(mSCanvas);
         
@@ -226,15 +218,15 @@ public class MainActivity extends Activity {
         //System.out.println(folderPath);
         //saveFile = folderPath + "/" + "SAMM.data";
     }
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-       
+        
         
         return true;
     }
-
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -260,31 +252,22 @@ public class MainActivity extends Activity {
             	openGallery();
             	return true;
             case R.id.action8:
-            	addText();
+                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_TEXT);
             	return true;
+            case R.id.action9:
+                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
+                return true;
+            case R.id.action10:
+                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
     
-    public void addText()
-    {
-    	EditText text = new EditText(this);
-    	mCanvasContainer.addView(text);
-    	
-    	text.requestFocus();
-    	
-    	imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }
-    public void openGallery()
-    {
-    	if(imm.isAcceptingText())
-    	{
-    		imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-    	}
-    	
+    public void openGallery() {
     	Intent intent = new Intent(Intent.ACTION_PICK,
-    			MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                   MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
     	
     	final int IMG_REQ_CODE = 1234;
     	
@@ -294,56 +277,34 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
     	super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) 
-        {
-        	switch(requestCode)
-        	{
-        		case 1234:
-        			Toast.makeText(MainActivity.this, "Image Selected", Toast.LENGTH_SHORT).show();
-        			Uri pictureUri = data.getData();
-    
-        			 try {
-        			  bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
-//        			  setContentView(new MyView(this));
-//        			  mCanvasContainer.addView(new MyView(this));
-        			  
-        			  ImageView imgView = new ImageView(this);
-        			  imgView.setImageBitmap(bitmap);
-
-        			  mCanvasContainer.addView(imgView);
-        			  
-        			 } catch (FileNotFoundException e) {
-        			  // TODO Auto-generated catch block
-        			  e.printStackTrace();
-        			 }
+        if (resultCode == RESULT_OK) {
+        	switch(requestCode) {
+        	    case 1234:
+        	        Uri pictureUri = data.getData();
+                    
+        			try {
+        			    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
+        			    RectF rectF = new RectF(0, 0, 200, 200); //Position and size of image
+        			    SObjectImage sImageObject = new SObjectImage();
+        			    sImageObject.setRect(rectF);
+        			    sImageObject.setImageBitmap(bitmap);
+        			    if(mSCanvas.insertSAMMImage(sImageObject, true) ) {}
+        			} catch (FileNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+        			}
         			break;
         	}
         }
     }
     
-    class MyView extends View
-    {
-
-		public MyView(Context context) 
-		{
-			super(context);
-		}
-		
-		@Override
-		protected void onDraw(Canvas canvas) 
-		{
-			canvas.drawBitmap(bitmap, 50, 50, null);
-		}
-    	
-    }
-
     //Need to find a way to redo() after previewing the animation. Perhaps keep
     //a history of saveSammData()?.
     public void previewAnimation() {
         //This line ensures that the animation plays only up to the current state.
         //It will also wipe any redo() history.
         mSCanvas.loadSAMMData(mSCanvas.saveSAMMData());
-       
+        
         
         //System.out.println(saveFile);
         //mSCanvas.saveSAMMFile(saveFile);
@@ -353,12 +314,12 @@ public class MainActivity extends Activity {
         mSCanvas.setAnimationSpeed(animationSpeed);
         mSCanvas.doAnimationStart();
     }
-
+    
     public void slowDownAnimation() {
         if (animationSpeed > SLOWEST_SPEED)
             mSCanvas.setAnimationSpeed(--animationSpeed);
     }
-
+    
     public void speedUpAnimation() {
         if (animationSpeed < FASTEST_SPEED)
             mSCanvas.setAnimationSpeed(++animationSpeed);
