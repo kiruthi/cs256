@@ -1,42 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<ScrollView
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+     xmlns:android="http://schemas.android.com/apk/res/android">
+    
+	
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	
+	    <Button
+	        android:id="@+id/drawButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:width="150dp" />
+	    
+	    <TextView
+	        android:id="@+id/drawButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBottom="@+id/drawButton"
+	        android:layout_toRightOf="@id/drawButton"
+	        android:text="@string/drawButtonTextString" />
+	    
+	     <Button
+	        android:id="@+id/textButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/drawButton"
+	        android:width="150dp" />            
+	
+	    <TextView
+	        android:id="@+id/textButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/textButton"
+	        android:layout_alignBottom="@+id/textButton"
+	        android:text="@string/textButtonTextString" />
+	
+	    <Button
+	        android:id="@+id/pictureButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/textButton" 
+	        android:width="150dp"/>    
+	      <TextView
+	        android:id="@+id/pictureButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/pictureButton"
+	        android:layout_alignBottom="@+id/pictureButton"
+	        android:text="@string/pictureButtonTextString" />
+	    
+	    <Button
+	        android:id="@+id/eraseButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/pictureButton"
+	        android:width="150dp" />    
+	    <TextView
+	        android:id="@+id/eraseButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/eraseButton"
+	        android:layout_alignBottom="@+id/eraseButton"
+	        android:text="@string/eraseButtonTextString" />
+	    
+	    <Button
+	        android:id="@+id/cancelButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/eraseButton" 
+	        android:width="150dp"/>
+	     <TextView
+	        android:id="@+id/cancelButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/cancelButton"
+	        android:layout_alignBottom="@+id/cancelButton"
+	        android:text="@string/cancelButtonTextString" />
+	   
+	            
+	</RelativeLayout>
 
-    <Button
-        android:id="@+id/textButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
-
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textButton" />
-
-    <Button
-        android:id="@+id/pictureButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/cancelButton" />
-
-    <Button
-        android:id="@+id/eraseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/pictureButton" />
-
-    <Button
-        android:id="@+id/drawButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/eraseButton" />
-
-</RelativeLayout>
+</ScrollView>

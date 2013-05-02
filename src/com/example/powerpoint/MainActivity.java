@@ -1,6 +1,5 @@
 package com.example.powerpoint;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import com.samsung.samm.common.SAMMLibConstants;
@@ -15,31 +14,23 @@ import com.samsung.spensdk.applistener.SPenHoverListener;
 import com.samsung.spensdk.applistener.SPenTouchListener;
 
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * This is the main activity where all the drawing and animations occur.
@@ -58,7 +49,7 @@ public class MainActivity extends Activity {
     private SCanvasView mSCanvas;
     private int animationSpeed;
     private SOptionSCanvas options;
-    private String saveFile;
+   // private String saveFile;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {

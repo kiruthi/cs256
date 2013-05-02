@@ -13,4 +13,12 @@
     <string name="action9">Pen Mode</string>
     <string name="action10">Eraser Mode</string>
 	<string name="splash_screen">Splash Screen</string>
+	
+	<string name="drawButtonTextString">Use S-Pen to Draw Mode</string>
+	<string name="textButtonTextString">Insert a Text Box</string>
+	<string name="pictureButtonTextString">Insert an Image</string>
+	<string name="eraseButtonTextString">Set S-Pen to Eraser Mode</string>	
+	<string name="cancelButtonTextString">Exit Options</string>
+
+	
 </resources>

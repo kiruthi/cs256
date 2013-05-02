@@ -21,7 +21,7 @@ public class SplashActivity extends Activity
 		
 		int splashId;
 		
-		splashId= R.drawable.ic_launcher;
+		splashId= R.drawable.splash_image;
 		
 		Bitmap splashBitmap = BitmapFactory.decodeResource(getResources(), splashId);
 		
