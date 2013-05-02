@@ -12,6 +12,7 @@
     <string name="action8">Text Mode</string>
     <string name="action9">Pen Mode</string>
     <string name="action10">Eraser Mode</string>
+    <string name="optionsText">Options</string>
 	<string name="splash_screen">Splash Screen</string>
 	
 	<string name="drawButtonTextString">Use S-Pen to Draw Mode</string>

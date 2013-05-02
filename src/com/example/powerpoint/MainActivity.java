@@ -1,6 +1,8 @@
 package com.example.powerpoint;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 import com.samsung.samm.common.SAMMLibConstants;
 import com.samsung.samm.common.SObjectImage;
@@ -15,12 +17,16 @@ import com.samsung.spensdk.applistener.SPenTouchListener;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.view.Menu;
@@ -29,6 +35,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,9 +62,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
         setContentView(R.layout.activity_main);
+        
+        View content = findViewById(R.id.canvas_container);
+        content.setDrawingCacheEnabled(true);
         
         animationSpeed = SOptionPlay.ANIMATION_SPEED_NORMAL; //Default speed
         options = new SOptionSCanvas();
@@ -134,63 +145,7 @@ public class MainActivity extends Activity {
                     
                     @Override
                     public void onHoverButtonDown(View view, MotionEvent event) {
-                        final Dialog myDialog = new Dialog(MainActivity.this);
-                        myDialog.setCancelable(true);
-                        myDialog.setTitle("Options");
-                        myDialog.setContentView(R.layout.dialog_layout);
-                        
-                        Button textButton = (Button) myDialog.findViewById (R.id.textButton);
-                        textButton.setText("Text Mode");
-                        textButton.setOnClickListener( new OnClickListener() {
-                            @Override
-                            public void onClick(View arg0) {
-                                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_TEXT);
-                                myDialog.dismiss();
-                            }
-                        });
-                        
-                        Button drawButton = (Button) myDialog.findViewById (R.id.drawButton);
-                        drawButton.setText("Pen Mode");
-                        drawButton.setOnClickListener( new OnClickListener() {
-                            @Override
-                            public void onClick(View arg0) {
-                                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
-                                myDialog.dismiss();
-                            }
-                        });
-                        
-                        Button eraseButton = (Button) myDialog.findViewById (R.id.eraseButton);
-                        eraseButton.setText("Eraser Mode");
-                        eraseButton.setOnClickListener( new OnClickListener() {
-                            @Override
-                            public void onClick(View arg0) {
-                                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
-                                myDialog.dismiss();
-                            }
-                        });
-                        
-                        Button cancelButton = (Button) myDialog.findViewById (R.id.cancelButton);
-                        cancelButton.setText("Cancel");
-                        cancelButton.setOnClickListener( new OnClickListener() {
-
-                            @Override
-                            public void onClick(View arg0) {
-                                myDialog.dismiss();
-                            }
-                        });
-                        
-                        Button pictureButton = (Button) myDialog.findViewById (R.id.pictureButton);
-                        pictureButton.setText("Insert Picture");
-                        pictureButton.setOnClickListener( new OnClickListener() {
-
-                            @Override
-                            public void onClick(View arg0) {
-                                openGallery();
-                                myDialog.dismiss();
-                            }
-                        });
-                        
-                        myDialog.show();     
+                        optionsDialog();
                     }
                     
                     @Override
@@ -218,10 +173,28 @@ public class MainActivity extends Activity {
         return true;
     }
     
+    public void screenCapture(String fileName)
+    {
+    	View content = findViewById(R.id.canvas_container);
+      	Bitmap bitmap = content.getDrawingCache(true);
+    	File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+fileName+".png");
+      	try{
+    		file.createNewFile();
+    		FileOutputStream outStream = new FileOutputStream(file);
+    		bitmap.compress(CompressFormat.PNG, 100, outStream);
+    		outStream.close();
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    	
+    }
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action1:
+           /*
+        	case R.id.action1:
                 previewAnimation();
                 return true;
             case R.id.action2:
@@ -251,9 +224,75 @@ public class MainActivity extends Activity {
             case R.id.action10:
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
                 return true;
+                */
+            case R.id.options:
+            	optionsDialog();
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    public void optionsDialog()
+    {
+    	final Dialog myDialog = new Dialog(MainActivity.this);
+        myDialog.setCancelable(true);
+        myDialog.setTitle("Options");
+        myDialog.setContentView(R.layout.dialog_layout);
+        
+        Button textButton = (Button) myDialog.findViewById (R.id.textButton);
+        textButton.setText("Text Mode");
+        textButton.setOnClickListener( new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_TEXT);
+                myDialog.dismiss();
+            }
+        });
+        
+        Button drawButton = (Button) myDialog.findViewById (R.id.drawButton);
+        drawButton.setText("Pen Mode");
+        drawButton.setOnClickListener( new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
+                myDialog.dismiss();
+            }
+        });
+        
+        Button eraseButton = (Button) myDialog.findViewById (R.id.eraseButton);
+        eraseButton.setText("Eraser Mode");
+        eraseButton.setOnClickListener( new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
+                myDialog.dismiss();
+            }
+        });
+        
+        Button cancelButton = (Button) myDialog.findViewById (R.id.cancelButton);
+        cancelButton.setText("Cancel");
+        cancelButton.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            	 saveDialog();
+            	myDialog.dismiss();              
+            }
+        });
+        
+        Button pictureButton = (Button) myDialog.findViewById (R.id.pictureButton);
+        pictureButton.setText("Insert Picture");
+        pictureButton.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                openGallery();
+                myDialog.dismiss();
+            }
+        });
+        
+        myDialog.show();     
     }
     
     public void openGallery() {
@@ -264,6 +303,36 @@ public class MainActivity extends Activity {
     	
     	startActivityForResult(intent, IMG_REQ_CODE);
     }
+    
+    public void saveDialog()
+    {
+        AlertDialog.Builder alert= new AlertDialog.Builder(this);
+    	alert.setTitle("Save As");
+    	alert.setMessage("Enter Slide Name");
+    	final EditText input = new EditText(this);
+    	alert.setView(input);
+    	
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				screenCapture(input.getText().toString());
+			}
+		});
+    	
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+		});
+    	alert.show();
+     }
+    
     
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
@@ -317,7 +386,8 @@ public class MainActivity extends Activity {
     }
     
     public void pauseResume() {
-        int state = mSCanvas.getAnimationState();
+    	/*
+    	int state = mSCanvas.getAnimationState();
         
         if (state == SAMMLibConstants.ANIMATION_STATE_ON_PAUSED) {
             mSCanvas.doAnimationResume();
@@ -327,5 +397,6 @@ public class MainActivity extends Activity {
             mSCanvas.doAnimationPause();
             ((TextView) findViewById(R.id.action6)).setText("Resume");
         }
+        */
     }
 }
