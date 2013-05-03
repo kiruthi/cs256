@@ -11,6 +11,7 @@ import com.samsung.samm.common.SOptionSCanvas;
 import com.samsung.spensdk.SCanvasConstants;
 import com.samsung.spensdk.SCanvasView;
 import com.samsung.spensdk.applistener.AnimationProcessListener;
+import com.samsung.spensdk.applistener.ColorPickerColorChangeListener;
 import com.samsung.spensdk.applistener.SCanvasInitializeListener;
 import com.samsung.spensdk.applistener.SPenHoverListener;
 import com.samsung.spensdk.applistener.SPenTouchListener;
@@ -76,9 +77,7 @@ public class MainActivity extends Activity {
         options.mPlayOption.setSoundEffectOption(false); //Disable artificial sound effects
         mCanvasContainer = (RelativeLayout) findViewById(R.id.canvas_container);
         mSCanvas = new SCanvasView(this);
-        
-        //change background to white
-        mSCanvas.setBackgroundColor(Color.WHITE);
+         
         
         mSCanvas.setSCanvasInitializeListener(new SCanvasInitializeListener() {
             @Override
@@ -163,6 +162,11 @@ public class MainActivity extends Activity {
         
         
         mCanvasContainer.addView(mSCanvas);
+        
+      //change background to white
+        mSCanvas.setBackgroundColor(Color.WHITE);
+        mSCanvas.setBGColor(Color.WHITE);
+        
         
         //File folder = getBaseContext().getCacheDir();
         //String folderPath = folder.getAbsolutePath();
@@ -260,6 +264,8 @@ public class MainActivity extends Activity {
         drawButton.setOnClickListener( new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+            	
+            	
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
                 myDialog.dismiss();
             }
@@ -302,7 +308,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-            	mSCanvas.clearScreen();
+            	cancelDialog();
             	myDialog.dismiss();              
             }
         });
@@ -359,6 +365,32 @@ public class MainActivity extends Activity {
     	alert.show();
      }
     
+    public void cancelDialog()
+    {
+        AlertDialog.Builder alert= new AlertDialog.Builder(this);
+    	alert.setTitle("Cancel");
+    	alert.setMessage("Are you Sure?");
+    	
+    	alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+            	mSCanvas.clearScreen();
+			}
+		});
+    	
+    	alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+		});
+    	alert.show();
+     }
     
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
