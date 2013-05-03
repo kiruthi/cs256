@@ -20,6 +20,8 @@
 	<string name="pictureButtonTextString">Insert an Image</string>
 	<string name="eraseButtonTextString">Set S-Pen to Eraser Mode</string>	
 	<string name="cancelButtonTextString">Exit Options</string>
+	<string name="saveButtonTextString">Save As PNG File</string>
+	<string name="clearButtonTextString">Clear the Screen</string>
 
 	
 </resources>

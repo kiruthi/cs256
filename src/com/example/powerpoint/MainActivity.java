@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.RectF;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -75,6 +76,10 @@ public class MainActivity extends Activity {
         options.mPlayOption.setSoundEffectOption(false); //Disable artificial sound effects
         mCanvasContainer = (RelativeLayout) findViewById(R.id.canvas_container);
         mSCanvas = new SCanvasView(this);
+        
+        //change background to white
+        mSCanvas.setBackgroundColor(Color.WHITE);
+        
         mSCanvas.setSCanvasInitializeListener(new SCanvasInitializeListener() {
             @Override
             //You must set the options in this method. Otherwise the SCanvasView
@@ -276,7 +281,28 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
+            	myDialog.dismiss();              
+            }
+        });
+        
+        Button saveButton = (Button) myDialog.findViewById (R.id.saveButton);
+        saveButton.setText("Save");
+        saveButton.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
             	 saveDialog();
+            	myDialog.dismiss();              
+            }
+        });
+        
+        Button clearButton = (Button) myDialog.findViewById (R.id.clearButton);
+        clearButton.setText("Clear");
+        clearButton.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            	mSCanvas.clearScreen();
             	myDialog.dismiss();              
             }
         });
