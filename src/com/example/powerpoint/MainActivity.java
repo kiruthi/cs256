@@ -3,6 +3,8 @@ package com.example.powerpoint;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.samsung.samm.common.SAMMLibConstants;
 import com.samsung.samm.common.SObjectImage;
@@ -36,10 +38,14 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * This is the main activity where all the drawing and animations occur.
@@ -184,14 +190,24 @@ public class MainActivity extends Activity {
     
     public void screenCapture(String fileName)
     {
-    	View content = findViewById(R.id.canvas_container);
-      	Bitmap bitmap = content.getDrawingCache(true);
-    	File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+fileName+".png");
+//    	View content = findViewById(R.id.canvas_container);
+//      	Bitmap bitmap = content.getDrawingCache(true);
+//    	File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+fileName+".png");
       	try{
-    		file.createNewFile();
+      		File presFile = getBaseContext().getDir("spen", 0);
+      		String savefName = presFile.getAbsolutePath() + "/" + fileName;
+      		if(mSCanvas.saveSAMMFile(savefName))
+      		{
+      			Toast.makeText(this, "File Saved!", Toast.LENGTH_SHORT).show();
+      		}
+      		else
+      		{
+      			Toast.makeText(this, "Error saving file!", Toast.LENGTH_SHORT).show();
+      		}
+    		/*file.createNewFile();
     		FileOutputStream outStream = new FileOutputStream(file);
     		bitmap.compress(CompressFormat.PNG, 100, outStream);
-    		outStream.close();
+    		outStream.close();*/
     	}catch(Exception e)
     	{
     		e.printStackTrace();
@@ -202,8 +218,8 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-           /*
-        	case R.id.action1:
+           
+        	/**case R.id.action1:
                 previewAnimation();
                 return true;
             case R.id.action2:
@@ -220,23 +236,32 @@ public class MainActivity extends Activity {
                 return true;
             case R.id.action6:
                 pauseResume();
-                return true;
-            case R.id.action7:
+                return true;*/
+            case R.id.action1:
             	openGallery();
             	return true;
-            case R.id.action8:
+            case R.id.action2:
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_TEXT);
             	return true;
-            case R.id.action9:
+            case R.id.action3:
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
                 return true;
-            case R.id.action10:
+            case R.id.action4:
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
                 return true;
-                */
-            case R.id.options:
+            case R.id.action5:
+                loadFile();
+                return true;
+            case R.id.action6:
+                saveDialog();
+                return true; 
+            case R.id.action7:
+                cancelDialog();
+                return true; 
+                
+           /* case R.id.options:
             	optionsDialog();
-            	return true;
+            	return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -324,7 +349,25 @@ public class MainActivity extends Activity {
             }
         });
         
+        Button loadButton = (Button) myDialog.findViewById (R.id.loadButton);
+        loadButton.setText("Load");
+        loadButton.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                loadFile();
+                myDialog.dismiss();
+            }
+        });
+        
+        
         myDialog.show();     
+    }
+    
+    public void loadFile()
+    {
+    	Intent intent = new Intent(MainActivity.this, DisplayFileActivity.class);
+        startActivityForResult(intent, 1);
     }
     
     public void openGallery() {
@@ -397,16 +440,51 @@ public class MainActivity extends Activity {
     	super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
         	switch(requestCode) {
+        		case 1:
+        			File dir = getBaseContext().getDir("spen", 0);
+        	    	File[] subFiles = dir.listFiles();
+        	    	
+        	    	List<String> list = new ArrayList<String>();
+        	    	
+        	    	if (subFiles != null)
+        	    	{
+        	    	    for (File file : subFiles)
+        	    	    {
+        	    	        list.add(file.getName());
+        	    	    }
+        	    	}
+        	    	
+        	    	int fileIndex = data.getIntExtra("file", 0);
+        	    	
+        	    	if(fileIndex < list.size())
+        	    	{
+        	    		mSCanvas.clearScreen();
+        	    		mSCanvas.loadSAMMFile(dir.getAbsolutePath() + "/" 
+        	    				+ list.get(fileIndex), true);
+        	    	}
+        	    	
+        			break;
+        			
         	    case 1234:
         	        Uri pictureUri = data.getData();
                     
         			try {
         			    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
-        			    RectF rectF = new RectF(0, 0, 200, 200); //Position and size of image
-        			    SObjectImage sImageObject = new SObjectImage();
-        			    sImageObject.setRect(rectF);
-        			    sImageObject.setImageBitmap(bitmap);
-        			    if(mSCanvas.insertSAMMImage(sImageObject, true) ) {}
+        			    int byteSize = bitmap.getByteCount();
+        			    
+        			    if(byteSize < 1024000)
+        			    {
+	        			    RectF rectF = new RectF(0, 0, 200, 200); //Position and size of image
+	        			    SObjectImage sImageObject = new SObjectImage();
+	        			    sImageObject.setRect(rectF);
+	        			    sImageObject.setImageBitmap(bitmap);
+	        			    if(mSCanvas.insertSAMMImage(sImageObject, true) ) {}
+        			    }
+        			    else
+        			    {
+        			    	Toast.makeText(this, "Image is too big", Toast.LENGTH_SHORT).show();
+        			    }
+        			    
         			} catch (FileNotFoundException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();

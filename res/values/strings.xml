@@ -12,16 +12,21 @@
     <string name="action8">Text Mode</string>
     <string name="action9">Pen Mode</string>
     <string name="action10">Eraser Mode</string>
+    <string name="action11">Load</string>
+    <string name="action12">Clear</string>
+    <string name="action13">Save</string>
     <string name="optionsText">Options</string>
-	<string name="splash_screen">Splash Screen</string>
-	
-	<string name="drawButtonTextString">Use S-Pen to Draw Mode</string>
-	<string name="textButtonTextString">Insert a Text Box</string>
-	<string name="pictureButtonTextString">Insert an Image</string>
-	<string name="eraseButtonTextString">Set S-Pen to Eraser Mode</string>	
-	<string name="cancelButtonTextString">Exit Options</string>
-	<string name="saveButtonTextString">Save As PNG File</string>
-	<string name="clearButtonTextString">Clear the Screen</string>
+    <string name="splash_screen">Splash Screen</string>
+    <string name="drawButtonTextString">Use S-Pen to Draw Mode</string>
+    <string name="textButtonTextString">Insert a Text Box</string>
+    <string name="pictureButtonTextString">Insert an Image</string>
+    <string name="eraseButtonTextString">Set S-Pen to Eraser Mode</string>
+    <string name="cancelButtonTextString">Exit Options</string>
+    <string name="saveButtonTextString">Save As PNG File</string>
+    <string name="clearButtonTextString">Clear the Screen</string>
+    <string name="loadButtonTextString">Loads a previous slide</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_display_file">DisplayFileActivity</string>
 
-	
 </resources>

@@ -1,43 +1,49 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-<!-- 
+
     <item
         android:id="@+id/action1"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action1"/>
+        android:showAsAction="always"
+        android:title="@string/action7"/>
     
     <item
         android:id="@+id/action2"
         android:orderInCategory="101"
-        android:showAsAction="never"
-        android:title="@string/action2"/>
+        android:showAsAction="always"
+        android:title="@string/action8"/>
     
     <item
         android:id="@+id/action3"
         android:orderInCategory="102"
-        android:showAsAction="never"
-        android:title="@string/action3"/>
+        android:showAsAction="always"
+        android:title="@string/action9"/>
     
     <item
         android:id="@+id/action4"
         android:orderInCategory="103"
-        android:showAsAction="never"
-        android:title="@string/action4"/>
+        android:showAsAction="always"
+        android:title="@string/action10"/>
     
     <item
         android:id="@+id/action5"
         android:orderInCategory="104"
-        android:showAsAction="never"
-        android:title="@string/action5"/>
+        android:showAsAction="always"
+        android:title="@string/action11"/>
     
     <item
         android:id="@+id/action6"
         android:orderInCategory="105"
-        android:showAsAction="never"
-        android:title="@string/action6"/>
+        android:showAsAction="always"
+        android:title="@string/action13"/>
     
-   <item
+    <item
+        android:id="@+id/action7"
+        android:orderInCategory="105"
+        android:showAsAction="always"
+        android:title="@string/action12"/>
+    
+  <!--  <item
         android:id="@+id/action7"
         android:orderInCategory="106"
         android:showAsAction="never"
@@ -60,13 +66,11 @@
         android:orderInCategory="109"
         android:showAsAction="never"
         android:title="@string/action10"/>
-    
-     -->
      
     <item
         android:id="@+id/options"
         android:orderInCategory="119"
         android:showAsAction="never"
-        android:title="@string/optionsText"/>
+        android:title="@string/optionsText"/>  -->
     
 </menu>
