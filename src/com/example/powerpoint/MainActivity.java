@@ -2,6 +2,8 @@ package com.example.powerpoint;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ import com.samsung.spensdk.applistener.SPenTouchListener;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -25,6 +28,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.RectF;
@@ -184,11 +188,20 @@ public class MainActivity extends Activity {
         return true;
     }
     
+    public void email()
+    {
+    	
+    }
+    
     public void screenCapture(String fileName)
     {
 //    	View content = findViewById(R.id.canvas_container);
 //      	Bitmap bitmap = content.getDrawingCache(true);
 //    	File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+fileName+".png");
+    	/*file.createNewFile();
+		FileOutputStream outStream = new FileOutputStream(file);
+		bitmap.compress(CompressFormat.PNG, 100, outStream);
+		outStream.close();*/
       	try{
       		File presFile = getBaseContext().getDir("spen", 0);
       		File folder = new File(presFile.getAbsolutePath() + "/" + fileName);
@@ -219,10 +232,6 @@ public class MainActivity extends Activity {
       		{
       			Toast.makeText(this, "Error saving file!", Toast.LENGTH_SHORT).show();
       		}
-    		/*file.createNewFile();
-    		FileOutputStream outStream = new FileOutputStream(file);
-    		bitmap.compress(CompressFormat.PNG, 100, outStream);
-    		outStream.close();*/
     	}catch(Exception e)
     	{
     		e.printStackTrace();
@@ -271,7 +280,7 @@ public class MainActivity extends Activity {
                 saveDialog();
                 return true; 
             case R.id.action7:
-                cancelDialog();
+                clearDialog();
                 return true; 
             case R.id.action8:
             	createNewSlide();
@@ -385,6 +394,17 @@ public class MainActivity extends Activity {
             }
         });
         
+        Button exportButton = (Button) myDialog.findViewById (R.id.exportButton);
+        exportButton.setText("Export");
+        exportButton.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            	exportProject();
+            	myDialog.dismiss();              
+            }
+        });
+        
         Button saveButton = (Button) myDialog.findViewById (R.id.saveButton);
         saveButton.setText("Save");
         saveButton.setOnClickListener( new OnClickListener() {
@@ -413,7 +433,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-            	cancelDialog();
+            	clearDialog();
             	myDialog.dismiss();              
             }
         });
@@ -444,9 +464,17 @@ public class MainActivity extends Activity {
         myDialog.show();     
     }
     
+    public void exportProject()
+    {
+    	Intent intent = new Intent(MainActivity.this, DisplayFileActivity.class);
+    	intent.putExtra("option", "export");
+    	startActivityForResult(intent, 2);
+    }
+    
     public void loadFile()
     {
     	Intent intent = new Intent(MainActivity.this, DisplayFileActivity.class);
+    	intent.putExtra("option", "load");
         startActivityForResult(intent, 1);
     }
     
@@ -490,10 +518,10 @@ public class MainActivity extends Activity {
     	alert.show();
      }
     
-    public void cancelDialog()
+    public void clearDialog()
     {
         AlertDialog.Builder alert= new AlertDialog.Builder(this);
-    	alert.setTitle("Cancel");
+    	alert.setTitle("Clear");
     	alert.setMessage("Are you Sure?");
     	
     	alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -517,12 +545,30 @@ public class MainActivity extends Activity {
     	alert.show();
      }
     
+    public void exportFile(String fileName)
+    {
+		View content = findViewById(R.id.canvas_container);
+     	Bitmap bitmap = content.getDrawingCache(true);
+    	File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+fileName);
+    	try {
+			file.createNewFile();
+			FileOutputStream outStream = new FileOutputStream(file);
+			bitmap.compress(CompressFormat.PNG, 100, outStream);
+			outStream.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
     	super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
         	switch(requestCode) {
-        		case 1:
+        		
+        		case 1: //Loading Files/project
         			File dir = getBaseContext().getDir("spen", 0);
         	    	File[] subFiles = dir.listFiles();
         	    	
@@ -576,6 +622,29 @@ public class MainActivity extends Activity {
         	        	}
         	    	}
         	    	
+        			break;
+        			
+        		case 2://Exporting Project files to png
+        			String dirPath = data.getStringExtra("dirPath");     
+        			File directory	= new File(dirPath);
+        			String dirName = directory.getName();
+        	    	File[] files = directory.listFiles();
+        	    
+    	        	if (files != null)
+    	        	{
+    	        		Toast t = Toast.makeText(getApplicationContext(), "Exporting Now. Please Wait.", Toast.LENGTH_SHORT);
+    	        		t.show();
+    	        	    for (File file : files)
+    	        	    {
+    	        	    	mSCanvas.loadSAMMFile(directory.getAbsolutePath() + "/" + file.getName(),true);
+    	        	    	exportFile(dirName+file.getName());
+    	        	    }
+    	        	}	
+    	        	else
+    	        	{
+    	        		Toast t = Toast.makeText(getApplicationContext(), "No Files in Project. Please check project.", Toast.LENGTH_SHORT);
+    	        		t.show();
+    	        	}
         			break;
         			
         	    case 1234:

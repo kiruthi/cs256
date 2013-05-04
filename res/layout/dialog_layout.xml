@@ -116,12 +116,27 @@
 	        android:layout_alignBottom="@id/loadButton"
 	        android:text="@string/loadButtonTextString" />
 	     
+	     <Button
+	        android:id="@+id/exportButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@id/loadButton" 
+	        android:width="150dp"/>
+	     <TextView
+	        android:id="@+id/exportButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/exportButton"
+	        android:layout_alignBottom="@id/exportButton"
+	        android:text="@string/exportButtonTextString" />
+	     
 	      <Button
 	        android:id="@+id/clearButton"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@id/loadButton" 
+	        android:layout_below="@id/exportButton" 
 	        android:width="150dp"/>
 	     <TextView
 	        android:id="@+id/clearButtonTextView"
