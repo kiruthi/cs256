@@ -396,6 +396,17 @@ public class MainActivity extends Activity {
             }
         });
         
+        Button undoButton = (Button) myDialog.findViewById (R.id.undoButton);
+        undoButton.setText("Undo");
+        undoButton.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            	mSCanvas.undo();
+            	myDialog.dismiss();              
+            }
+        });
+        
         Button clearButton = (Button) myDialog.findViewById (R.id.clearButton);
         clearButton.setText("Clear");
         clearButton.setOnClickListener( new OnClickListener() {

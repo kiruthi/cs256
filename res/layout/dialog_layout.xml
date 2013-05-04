@@ -72,11 +72,26 @@
 	        android:text="@string/eraseButtonTextString" />
 	    
 	    <Button
-	        android:id="@+id/saveButton"
+	        android:id="@+id/undoButton"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
 	        android:layout_below="@id/eraseButton" 
+	        android:width="150dp"/>
+	     <TextView
+	        android:id="@+id/undoButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/undoButton"
+	        android:layout_alignBottom="@id/undoButton"
+	        android:text="@string/undoButtonTextString" />
+	    
+	    <Button
+	        android:id="@+id/saveButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@id/undoButton" 
 	        android:width="150dp"/>
 	     <TextView
 	        android:id="@+id/saveButtonTextView"

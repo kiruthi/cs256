@@ -26,7 +26,8 @@
     <string name="cancelButtonTextString">Exit Options</string>
     <string name="saveButtonTextString">Save As PNG File</string>
     <string name="clearButtonTextString">Clear the Screen</string>
-    <string name="loadButtonTextString">Loads a previous slide</string>
+    <string name="loadButtonTextString">Load a previous slide</string>    
+    <string name="undoButtonTextString">Undo a previous command</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_display_file">Files to load</string>
