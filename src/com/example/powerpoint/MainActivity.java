@@ -489,6 +489,8 @@ public class MainActivity extends Activity {
     
     public void saveDialog()
     {
+    	if(!isSaved)
+    	{
         AlertDialog.Builder alert= new AlertDialog.Builder(this);
     	alert.setTitle("Save As");
     	alert.setMessage("Enter Name");
@@ -516,6 +518,11 @@ public class MainActivity extends Activity {
 			}
 		});
     	alert.show();
+    	}
+    	else
+    	{
+    		screenCapture(savedName);
+    	}
      }
     
     public void clearDialog()
@@ -614,6 +621,9 @@ public class MainActivity extends Activity {
 	        	    			savedName = dir.getName();
 	        	    			isSaved = true;
 	        	    			
+	        	    			String fn = list.get(fileIndex);
+	        	    			fn.split(".");
+	        	    			
 	        	    			slideNo = list.size() - (fileIndex + 1);
 	        	    			maxSlideNo = list.size();
 	        	    			
@@ -654,7 +664,7 @@ public class MainActivity extends Activity {
         			    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
         			    int byteSize = bitmap.getByteCount();
         			    
-        			    if(byteSize < 1024000)
+        			    if(byteSize < 5243000)
         			    {
 	        			    RectF rectF = new RectF(0, 0, 200, 200); //Position and size of image
 	        			    SObjectImage sImageObject = new SObjectImage();
