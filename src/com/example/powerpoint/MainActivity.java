@@ -622,9 +622,9 @@ public class MainActivity extends Activity {
 	        	    			isSaved = true;
 	        	    			
 	        	    			String fn = list.get(fileIndex);
-	        	    			fn.split(".");
+	        	    			String[] fnSplit = fn.split("\\.");
 	        	    			
-	        	    			slideNo = list.size() - (fileIndex + 1);
+	        	    			slideNo = Integer.parseInt(fnSplit[0]);
 	        	    			maxSlideNo = list.size();
 	        	    			
 	        	    			Toast.makeText(MainActivity.this, "File Loaded!", Toast.LENGTH_LONG).show();
