@@ -2,25 +2,21 @@ package com.example.powerpoint;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.samsung.samm.common.SAMMLibConstants;
 import com.samsung.samm.common.SObjectImage;
 import com.samsung.samm.common.SOptionPlay;
 import com.samsung.samm.common.SOptionSCanvas;
 import com.samsung.spensdk.SCanvasConstants;
 import com.samsung.spensdk.SCanvasView;
 import com.samsung.spensdk.applistener.AnimationProcessListener;
-import com.samsung.spensdk.applistener.ColorPickerColorChangeListener;
 import com.samsung.spensdk.applistener.SCanvasInitializeListener;
 import com.samsung.spensdk.applistener.SPenHoverListener;
 import com.samsung.spensdk.applistener.SPenTouchListener;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -29,7 +25,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.RectF;
@@ -38,13 +33,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -456,11 +447,18 @@ public class MainActivity extends Activity {
         	    	
         	    	int fileIndex = data.getIntExtra("file", 0);
         	    	
-        	    	if(fileIndex < list.size())
+        	    	if(fileIndex == -1)
+        	    	{
+        	    		Toast.makeText(MainActivity.this, "No File to Load!", Toast.LENGTH_LONG).show();
+        	    	}
+        	    	else if(fileIndex < list.size())
         	    	{
         	    		mSCanvas.clearScreen();
-        	    		mSCanvas.loadSAMMFile(dir.getAbsolutePath() + "/" 
-        	    				+ list.get(fileIndex), true);
+        	    		if(mSCanvas.loadSAMMFile(dir.getAbsolutePath() + "/" 
+        	    				+ list.get(fileIndex), true))
+        	    		{
+        	    			Toast.makeText(MainActivity.this, "File Loaded!", Toast.LENGTH_LONG).show();
+        	    		}
         	    	}
         	    	
         			break;

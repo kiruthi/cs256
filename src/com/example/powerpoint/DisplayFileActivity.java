@@ -32,6 +32,14 @@ public class DisplayFileActivity extends Activity {
     	        list.add(file.getName());
     	    }
     	}
+    	
+    	if(list.size() == 0)
+    	{
+    		Intent intent = new Intent();
+			intent.putExtra("file", -1);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+    	}
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>
         (DisplayFileActivity.this, R.layout.activity_display_file, 
