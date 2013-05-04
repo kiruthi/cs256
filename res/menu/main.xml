@@ -38,6 +38,18 @@
         android:title="@string/action13"/>
     
     <item
+        android:id="@+id/action8"
+        android:orderInCategory="105"
+        android:showAsAction="always"
+        android:title="@string/action14"/>
+    
+     <item
+        android:id="@+id/action9"
+        android:orderInCategory="105"
+        android:showAsAction="always"
+        android:title="@string/action15"/>
+    
+    <item
         android:id="@+id/action7"
         android:orderInCategory="105"
         android:showAsAction="always"

@@ -51,10 +51,15 @@ public class MainActivity extends Activity {
     public final int SLOWEST_SPEED = 0;
     public final int FASTEST_SPEED = 3;
     
+    private int slideNo = 0;
+    private int maxSlideNo = 0;
+    
     private RelativeLayout mCanvasContainer;
     private SCanvasView mSCanvas;
     private int animationSpeed;
     private SOptionSCanvas options;
+    private boolean isSaved = false;
+    private String savedName;
    // private String saveFile;
     
     @Override
@@ -186,9 +191,28 @@ public class MainActivity extends Activity {
 //    	File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+fileName+".png");
       	try{
       		File presFile = getBaseContext().getDir("spen", 0);
-      		String savefName = presFile.getAbsolutePath() + "/" + fileName;
+      		File folder = new File(presFile.getAbsolutePath() + "/" + fileName);
+      		
+      		if(!folder.exists())
+      		{
+      			folder.mkdir();
+      		}
+      		
+      		String savefName = presFile.getAbsolutePath() + "/" + fileName + "/" + slideNo;
+      		
+      		if(maxSlideNo == 0)
+      		{
+      			slideNo++;
+      		}
+      		else
+      		{
+      			slideNo = maxSlideNo;
+      			maxSlideNo = 0;
+      		}
+      		
       		if(mSCanvas.saveSAMMFile(savefName))
       		{
+      			isSaved = true;
       			Toast.makeText(this, "File Saved!", Toast.LENGTH_SHORT).show();
       		}
       		else
@@ -249,6 +273,12 @@ public class MainActivity extends Activity {
             case R.id.action7:
                 cancelDialog();
                 return true; 
+            case R.id.action8:
+            	createNewSlide();
+            	return true;
+            case R.id.action9:
+            	createNewPresentation();
+            	return true;
                 
            /* case R.id.options:
             	optionsDialog();
@@ -256,6 +286,31 @@ public class MainActivity extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    public void createNewPresentation()
+    {
+    	if(isSaved)
+    	{
+    		createNewSlide();
+    	}
+    	savedName = "";
+    	isSaved = false;
+    	slideNo = 0;
+    	maxSlideNo = 0;
+    }
+    
+    public void createNewSlide()
+    {
+    	if(!isSaved)
+    	{
+    		saveDialog();
+    	}
+    	else
+    	{
+    		screenCapture(savedName);
+    	}
+    	mSCanvas.clearScreen();
     }
     
     public void optionsDialog()
@@ -374,7 +429,7 @@ public class MainActivity extends Activity {
     {
         AlertDialog.Builder alert= new AlertDialog.Builder(this);
     	alert.setTitle("Save As");
-    	alert.setMessage("Enter Slide Name");
+    	alert.setMessage("Enter Name");
     	final EditText input = new EditText(this);
     	alert.setView(input);
     	
@@ -382,7 +437,9 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
+				
+				savedName = input.getText().toString();
+				
 				screenCapture(input.getText().toString());
 			}
 		});
@@ -445,20 +502,44 @@ public class MainActivity extends Activity {
         	    	    }
         	    	}
         	    	
-        	    	int fileIndex = data.getIntExtra("file", 0);
+        	    	int dirNo = data.getIntExtra("dir", 0);
         	    	
-        	    	if(fileIndex == -1)
+        	    	if(dirNo == -1)
         	    	{
         	    		Toast.makeText(MainActivity.this, "No File to Load!", Toast.LENGTH_LONG).show();
         	    	}
-        	    	else if(fileIndex < list.size())
+        	    	else if(dirNo < list.size())
         	    	{
-        	    		mSCanvas.clearScreen();
-        	    		if(mSCanvas.loadSAMMFile(dir.getAbsolutePath() + "/" 
-        	    				+ list.get(fileIndex), true))
-        	    		{
-        	    			Toast.makeText(MainActivity.this, "File Loaded!", Toast.LENGTH_LONG).show();
-        	    		}
+        	    		dir = new File(dir.getAbsolutePath() + "/" + list.get(dirNo));
+        	        	subFiles = dir.listFiles();
+        	        	
+        	        	list = new ArrayList<String>();
+        	        	
+        	        	if (subFiles != null)
+        	        	{
+        	        	    for (File file : subFiles)
+        	        	    {
+        	        	        list.add(file.getName());
+        	        	    }
+        	        	}
+        	        	
+        	        	int fileIndex = data.getIntExtra("file", 0);
+        	        	
+        	        	if(fileIndex < list.size())
+        	        	{
+	        	    		mSCanvas.clearScreen();
+	        	    		if(mSCanvas.loadSAMMFile(dir.getAbsolutePath() + "/" 
+	        	    				+ list.get(fileIndex), true))
+	        	    		{
+	        	    			savedName = dir.getName();
+	        	    			isSaved = true;
+	        	    			
+	        	    			slideNo = list.size() - (fileIndex + 1);
+	        	    			maxSlideNo = list.size();
+	        	    			
+	        	    			Toast.makeText(MainActivity.this, "File Loaded!", Toast.LENGTH_LONG).show();
+	        	    		}
+        	        	}
         	    	}
         	    	
         			break;

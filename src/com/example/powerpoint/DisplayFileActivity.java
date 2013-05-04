@@ -55,7 +55,62 @@ public class DisplayFileActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
+				/*Intent intent = new Intent();
+				intent.putExtra("file", arg2);
+                setResult(Activity.RESULT_OK, intent);
+                finish();*/
+				
+				listSlides(arg2);
+			}
+    		
+		});
+	}
+	
+	public void listSlides(final int dirNo)
+	{
+		File dir = getBaseContext().getDir("spen", 0);
+    	File[] subFiles = dir.listFiles();
+    	
+    	List<String> list = new ArrayList<String>();
+    	
+    	if (subFiles != null)
+    	{
+    	    for (File file : subFiles)
+    	    {
+    	        list.add(file.getName());
+    	    }
+    	}
+    	
+    	dir = new File(dir.getAbsolutePath() + "/" + list.get(dirNo));
+    	subFiles = dir.listFiles();
+    	
+    	list = new ArrayList<String>();
+    	
+    	if (subFiles != null)
+    	{
+    	    for (File file : subFiles)
+    	    {
+    	        list.add(file.getName());
+    	    }
+    	}
+    	
+    	ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        (DisplayFileActivity.this, R.layout.activity_display_file, 
+                R.id.dummyText, list);
+    	
+    	
+    	ListView listView = (ListView)findViewById(R.id.listView1);
+    	listView.setAdapter(null);
+    	listView.setAdapter(adapter);
+    	
+    	listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+
 				Intent intent = new Intent();
+				intent.putExtra("dir", dirNo);
 				intent.putExtra("file", arg2);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
