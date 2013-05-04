@@ -280,9 +280,9 @@ public class MainActivity extends Activity {
             	createNewPresentation();
             	return true;
                 
-           /* case R.id.options:
+            case R.id.options:
             	optionsDialog();
-            	return true;*/
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -290,14 +290,37 @@ public class MainActivity extends Activity {
     
     public void createNewPresentation()
     {
-    	if(isSaved)
-    	{
-    		createNewSlide();
-    	}
-    	savedName = "";
-    	isSaved = false;
-    	slideNo = 0;
-    	maxSlideNo = 0;
+    	AlertDialog.Builder alert= new AlertDialog.Builder(this);
+    	alert.setTitle("Create new Presentation?");
+    	alert.setMessage("Are you Sure?");
+    	
+    	alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				if(isSaved)
+		    	{
+		    		createNewSlide();
+		    	}
+		    	savedName = "";
+		    	isSaved = false;
+		    	slideNo = 0;
+		    	maxSlideNo = 0;
+			}
+		});
+    	
+    	alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+				
+			}
+		});
+    	alert.show();
+    	
     }
     
     public void createNewSlide()

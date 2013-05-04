@@ -21,7 +21,7 @@
 	        android:id="@+id/drawButtonTextView"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_alignBottom="@+id/drawButton"
+	        android:layout_alignBottom="@id/drawButton"
 	        android:layout_toRightOf="@id/drawButton"
 	        android:text="@string/drawButtonTextString" />
 	    
@@ -30,7 +30,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/drawButton"
+	        android:layout_below="@id/drawButton"
 	        android:width="150dp" />            
 	
 	    <TextView
@@ -38,7 +38,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@id/textButton"
-	        android:layout_alignBottom="@+id/textButton"
+	        android:layout_alignBottom="@id/textButton"
 	        android:text="@string/textButtonTextString" />
 	
 	    <Button
@@ -46,14 +46,14 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/textButton" 
+	        android:layout_below="@id/textButton" 
 	        android:width="150dp"/>    
 	      <TextView
 	        android:id="@+id/pictureButtonTextView"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@id/pictureButton"
-	        android:layout_alignBottom="@+id/pictureButton"
+	        android:layout_alignBottom="@id/pictureButton"
 	        android:text="@string/pictureButtonTextString" />
 	    
 	    <Button
@@ -61,14 +61,14 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/pictureButton"
+	        android:layout_below="@id/pictureButton"
 	        android:width="150dp" />    
 	    <TextView
 	        android:id="@+id/eraseButtonTextView"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@id/eraseButton"
-	        android:layout_alignBottom="@+id/eraseButton"
+	        android:layout_alignBottom="@id/eraseButton"
 	        android:text="@string/eraseButtonTextString" />
 	    
 	    <Button
@@ -76,29 +76,44 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/eraseButton" 
+	        android:layout_below="@id/eraseButton" 
 	        android:width="150dp"/>
 	     <TextView
 	        android:id="@+id/saveButtonTextView"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@id/saveButton"
-	        android:layout_alignBottom="@+id/saveButton"
+	        android:layout_alignBottom="@id/saveButton"
 	        android:text="@string/saveButtonTextString" />
+	     
+	       <Button
+	        android:id="@+id/loadButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@id/saveButton" 
+	        android:width="150dp"/>
+	     <TextView
+	        android:id="@+id/loadButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/loadButton"
+	        android:layout_alignBottom="@id/loadButton"
+	        android:text="@string/loadButtonTextString" />
 	     
 	      <Button
 	        android:id="@+id/clearButton"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/saveButton" 
+	        android:layout_below="@id/loadButton" 
 	        android:width="150dp"/>
 	     <TextView
 	        android:id="@+id/clearButtonTextView"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@id/clearButton"
-	        android:layout_alignBottom="@+id/clearButton"
+	        android:layout_alignBottom="@id/clearButton"
 	        android:text="@string/clearButtonTextString" />
 	   
 	     <Button
@@ -106,30 +121,17 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/clearButton" 
+	        android:layout_below="@id/clearButton" 
 	        android:width="150dp"/>
 	     <TextView
 	        android:id="@+id/cancelButtonTextView"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@id/cancelButton"
-	        android:layout_alignBottom="@+id/cancelButton"
+	        android:layout_alignBottom="@id/cancelButton"
 	        android:text="@string/cancelButtonTextString" />
 	     
-	      <Button
-	        android:id="@+id/loadButton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/cancelButton" 
-	        android:width="150dp"/>
-	     <TextView
-	        android:id="@+id/loadButtonTextView"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@+id/loadButton"
-	        android:layout_alignBottom="@+id/loadButton"
-	        android:text="@string/loadButtonTextString" />
+	    
 	            
 	</RelativeLayout>
 

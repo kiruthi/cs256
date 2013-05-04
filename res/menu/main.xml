@@ -78,11 +78,11 @@
         android:orderInCategory="109"
         android:showAsAction="never"
         android:title="@string/action10"/>
-     
+   -->  
     <item
         android:id="@+id/options"
         android:orderInCategory="119"
         android:showAsAction="never"
-        android:title="@string/optionsText"/>  -->
+        android:title="@string/optionsText"/>  
     
 </menu>
