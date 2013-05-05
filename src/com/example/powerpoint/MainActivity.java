@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,10 +44,12 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -64,6 +68,8 @@ public class MainActivity extends Activity {
     
     //Presentation isSvaed and name variables
     private boolean isSaved = false;
+    private boolean isNewSlide = false;
+    private boolean isSaveCalled = false;
     private String savedName;
     
     //SCanvas variables
@@ -192,6 +198,84 @@ public class MainActivity extends Activity {
       //change background to white
         mSCanvas.setBackgroundColor(Color.WHITE);
         mSCanvas.setBGColor(Color.WHITE);
+        
+        List<String> slideLst = new ArrayList<String>();
+        slideLst.add("Slide 0");
+        
+        addItemsToList(slideLst, -1);
+    }
+    
+    public void addItemsToList(List<String> slideLst, int selectedSlideNo)
+    {
+    	
+    	ArrayAdapter<String> adapter = new ArrayAdapter<String>
+        (MainActivity.this, R.layout.activity_main, 
+                R.id.textView1, slideLst);
+    	
+    	
+    	final ListView listView = (ListView)findViewById(R.id.slideView);
+    	listView.setAdapter(null);
+    	listView.setAdapter(adapter);
+    	
+    	if(selectedSlideNo != -1)
+    	{
+    		View selected = listView.getChildAt(selectedSlideNo);
+    		
+    		if(null != selected)
+    		{
+    			selected.setBackgroundColor(Color.LTGRAY);
+    		}
+    	}
+    	
+    	listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				
+				String fn;
+		    	String[] fnSplit;
+				
+				if(isSaved)
+				{
+					screenCapture(savedName);
+				
+					File dir = getBaseContext().getDir("spen", 0);
+					dir = new File(dir.getAbsolutePath() + "/" + savedName);
+					
+					File[] fName = dir.listFiles();
+					
+					List<String> newSlideLst = new ArrayList<String>();
+					
+					if(fName != null)
+					{
+						for(File file : fName)
+						{
+							fn = file.getName();
+							fnSplit = fn.split("\\.");
+							newSlideLst.add("Slide " + fnSplit[0]);
+						}
+					}
+					
+					Arrays.sort(fName);
+					fn = fName[arg2].getName();
+					fnSplit = fn.split("\\.");
+					
+					slideNo = Integer.parseInt(fnSplit[0]);
+					maxSlideNo = newSlideLst.size();
+					
+					if(arg2 < fName.length)
+					{
+						mSCanvas.clearScreen();
+						mSCanvas.loadSAMMFile(dir.getAbsolutePath() 
+								+ "/" + fName[arg2].getName(), true);
+					}
+					
+					Collections.sort(newSlideLst);
+					addItemsToList(newSlideLst, arg2);
+				}
+			}
+		});
     }
     
     @Override
@@ -216,14 +300,8 @@ public class MainActivity extends Activity {
      */
     public void screenCapture(String fileName)
     {
-//    	View content = findViewById(R.id.canvas_container);
-//      	Bitmap bitmap = content.getDrawingCache(true);
-//    	File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+fileName+".png");
-    	/*file.createNewFile();
-		FileOutputStream outStream = new FileOutputStream(file);
-		bitmap.compress(CompressFormat.PNG, 100, outStream);
-		outStream.close();*/
-      	try{
+
+    	try{
       		File presFile = getBaseContext().getDir("spen", 0);
       		File folder = new File(presFile.getAbsolutePath() + "/" + fileName);
       		
@@ -234,25 +312,44 @@ public class MainActivity extends Activity {
       		
       		String savefName = presFile.getAbsolutePath() + "/" + fileName + "/" + slideNo;
       		
-      		if(maxSlideNo == 0)
-      		{
-      			slideNo++;
-      		}
-      		else
-      		{
-      			slideNo = maxSlideNo;
-      			maxSlideNo = 0;
-      		}
-      		
       		if(mSCanvas.saveSAMMFile(savefName))
       		{
+      			if(!isSaved && isNewSlide)
+      			{
+      				refreshSlideList();
+      			}
+      			
+      			if(isNewSlide)
+      			{
+      				isNewSlide = false;
+      				mSCanvas.clearScreen();
+      			}
+      			
       			isSaved = true;
-      			Toast.makeText(this, "File Saved!", Toast.LENGTH_SHORT).show();
+      			Toast.makeText(this, "Saved slide " + slideNo + "!", Toast.LENGTH_SHORT).show();
+      			
+      			if(!isSaveCalled)
+      			{
+	      			if(maxSlideNo == 0)
+	          		{
+	          			slideNo++;
+	          		}
+	          		else
+	          		{
+	          			slideNo = maxSlideNo;
+	          			maxSlideNo = 0;
+	          		}
+      			}
+      			else
+      			{
+      				isSaveCalled = false;
+      			}
       		}
       		else
       		{
       			Toast.makeText(this, "Error saving file!", Toast.LENGTH_SHORT).show();
       		}
+      		
     	}catch(Exception e)
     	{
     		e.printStackTrace();
@@ -305,6 +402,7 @@ public class MainActivity extends Activity {
                 loadFile();
                 return true;
             case R.id.action6:
+            	isSaveCalled = true;
                 saveDialog();
                 return true; 
             case R.id.action7:
@@ -352,7 +450,6 @@ public class MainActivity extends Activity {
      */
     public void createNewPresentation()
     {
-    	//alert box to confirm user wants new presentation
     	AlertDialog.Builder alert= new AlertDialog.Builder(this);
     	alert.setTitle("Create new Presentation?");
     	alert.setMessage("Are you Sure?");
@@ -370,6 +467,11 @@ public class MainActivity extends Activity {
 		    	isSaved = false;
 		    	slideNo = 0;
 		    	maxSlideNo = 0;
+		    	
+		    	List<String> slideLst = new ArrayList<String>();
+		        slideLst.add("Slide 0");
+		        
+		        addItemsToList(slideLst, -1);
 			}
 		});
     	
@@ -386,11 +488,53 @@ public class MainActivity extends Activity {
     	
     }
     
+    public void refreshSlideList()
+    {
+    	if(null != savedName && savedName != "")
+    	{
+    	String fn;
+    	String[] fnSplit;
+    	
+    	File dir = getBaseContext().getDir("spen", 0);
+		dir = new File(dir.getAbsolutePath() + "/" + savedName);
+		
+		if(dir.exists())
+		{
+			File[] fName = dir.listFiles();
+			
+			List<String> newSlideLst = new ArrayList<String>();
+			
+			if(fName != null)
+			{
+				for(File file : fName)
+				{
+					fn = file.getName();
+					fnSplit = fn.split("\\.");
+					newSlideLst.add("Slide " + fnSplit[0]);
+				}
+			}
+			
+			newSlideLst.add("Slide " + newSlideLst.size());
+			
+			Collections.sort(newSlideLst);
+			addItemsToList(newSlideLst, -1);
+			
+		}
+		else
+		{
+			List<String> newSlideLst = new ArrayList<String>();
+			addItemsToList(newSlideLst, -1);
+		}
+    	}
+    }
+    
     /**
      * Adds a new slide to the presentation. If presentation is not saved, saved dialog will pop up.
      */
     public void createNewSlide()
     {
+    	isNewSlide = true;
+    	
     	if(!isSaved)
     	{
     		saveDialog();
@@ -399,7 +543,9 @@ public class MainActivity extends Activity {
     	{
     		screenCapture(savedName);
     	}
-    	mSCanvas.clearScreen();
+    	
+    	refreshSlideList();
+		
     }
     
     /**
@@ -574,7 +720,7 @@ public class MainActivity extends Activity {
      */
     public void saveDialog()
     {
-	    	//If presentation is not currently saves
+	    	//If presentation is not currently saved it asks for the name for the presentation
 	    	if(!isSaved)
 	    	{
 	    		//set up dialog
@@ -610,7 +756,7 @@ public class MainActivity extends Activity {
     	}
     	else
     	{
-    		//else ave current slide to presentation
+    		//else add current slide to presentation
     		screenCapture(savedName);
     	}
      }
@@ -684,6 +830,9 @@ public class MainActivity extends Activity {
         			File dir = getBaseContext().getDir("spen", 0);
         	    	File[] subFiles = dir.listFiles();
         	    	
+        	    	String fn;
+	    			String[] fnSplit;
+        	    	
         	    	List<String> list = new ArrayList<String>();
         	    	
         	    	if (subFiles != null)
@@ -706,28 +855,37 @@ public class MainActivity extends Activity {
         	        	subFiles = dir.listFiles();
         	        	
         	        	list = new ArrayList<String>();
+        	        	List<String> slideLst = new ArrayList<String>();
         	        	
         	        	if (subFiles != null)
         	        	{
         	        	    for (File file : subFiles)
         	        	    {
         	        	        list.add(file.getName());
+        	        	        fn = file.getName();
+	        	    			fnSplit = fn.split("\\.");
+        	        	        slideLst.add("Slide " + fnSplit[0]);
         	        	    }
         	        	}
         	        	
-        	        	int fileIndex = data.getIntExtra("file", 0);
+        	        	Collections.sort(slideLst);
+        	        	Collections.sort(list);
+        	        	
+        	        	addItemsToList(slideLst, -1);
+        	        	
+        	        	int fileIndex = 0;
         	        	
         	        	if(fileIndex < list.size())
         	        	{
 	        	    		mSCanvas.clearScreen();
 	        	    		if(mSCanvas.loadSAMMFile(dir.getAbsolutePath() + "/" 
-	        	    				+ list.get(fileIndex), true))
+	        	    				+ list.get(0), true))
 	        	    		{
 	        	    			savedName = dir.getName();
 	        	    			isSaved = true;
 	        	    			
-	        	    			String fn = list.get(fileIndex);
-	        	    			String[] fnSplit = fn.split("\\.");
+	        	    			fn = list.get(fileIndex);
+	        	    			fnSplit = fn.split("\\.");
 	        	    			
 	        	    			slideNo = Integer.parseInt(fnSplit[0]);
 	        	    			maxSlideNo = list.size();
