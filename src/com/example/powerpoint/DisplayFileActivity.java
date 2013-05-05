@@ -14,6 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+/**
+ *@author David Tang, Kiruthika Sivaraman, Parnit Sainion 
+ * DisplayFileAcitivity allows users to select a presentation or presentation slide.
+ */
 public class DisplayFileActivity extends Activity {
 
 	@Override
@@ -73,13 +77,18 @@ public class DisplayFileActivity extends Activity {
 		});
 	}
 	
+	/**
+	 *  Users select the presentation they want export out. The path to the presentation directory is passed back to 
+	 *  the main activity
+	 * @param position position of selected presentation in the presentations directory
+	 */
 	public void exportFiles(int position)
 	{
+		//Presentations directory is retrieved and all directories in that folder are obtained
 		File dir = getBaseContext().getDir("spen", 0);
     	File[] subFiles = dir.listFiles();
     	
-    	List<String> list = new ArrayList<String>();
-    	
+    	List<String> list = new ArrayList<String>();    	
     	if (subFiles != null)
     	{
     	    for (File file : subFiles)
@@ -88,17 +97,21 @@ public class DisplayFileActivity extends Activity {
     	    }
     	}
     	
+    	//Desired presentation directory is obtained 
     	dir = new File(dir.getAbsolutePath() + "/" + list.get(position));
     	
     	//System.out.println("Dir Path "+dir.getAbsolutePath());
     	//System.out.println("Dir Name "+dir.getName());
     	
+    	//All slides in desired presentation are listed
     	File[] files = dir.listFiles();
     
+    	//Intent with desired presentations path is set to return to main activity
     	Intent intent = new Intent();
 		intent.putExtra("dirPath", dir.getAbsolutePath());
         setResult(Activity.RESULT_OK, intent);
         
+        //Toast message is set to notify users that files are being exported (or not)
     	if (files != null)
     	{
     		Toast t = Toast.makeText(getApplicationContext(), "Exporting Now. Please Wait.", Toast.LENGTH_SHORT);

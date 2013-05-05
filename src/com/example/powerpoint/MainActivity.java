@@ -1,3 +1,4 @@
+
 package com.example.powerpoint;
 
 import java.io.File;
@@ -45,27 +46,29 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 /**
- * This is the main activity where all the drawing and animations occur.
- *
- * @author David Tang
- *
+ *@author David Tang, Kiruthika Sivaraman, Parnit Sainion
+ * MainActivity is where the presentations are created.
  */
-
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
     //Both of these integers are defined in SOptionPlay
     public final int SLOWEST_SPEED = 0;
     public final int FASTEST_SPEED = 3;
     
+    //Set up the number of slides for a presentation
     private int slideNo = 0;
     private int maxSlideNo = 0;
     
+    //Presentation isSvaed and name variables
+    private boolean isSaved = false;
+    private String savedName;
+    
+    //SCanvas variables
     private RelativeLayout mCanvasContainer;
     private SCanvasView mSCanvas;
     private int animationSpeed;
     private SOptionSCanvas options;
-    private boolean isSaved = false;
-    private String savedName;
+
     private HashMap<String,Integer> settingResourceMapInt = new HashMap<String, Integer>();
    // private String saveFile;
     
@@ -73,11 +76,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        
+       
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
+        
+        //set up layout
         setContentView(R.layout.activity_main);
         
+        //Set up s canvas and enable cache
         View content = findViewById(R.id.canvas_container);
         content.setDrawingCacheEnabled(true);
         
@@ -189,11 +195,18 @@ public class MainActivity extends Activity {
         return true;
     }
     
+    /**
+     * To be Added
+     */
     public void email()
     {
     	
     }
     
+    /**
+     * Saves a new presentation if not saved, else adds the current slide ot the presentation
+     * @param fileName name of presentation
+     */
     public void screenCapture(String fileName)
     {
 //    	View content = findViewById(R.id.canvas_container);
@@ -240,6 +253,9 @@ public class MainActivity extends Activity {
     	
     }
     
+    /**
+     * Sets up our menu on top of screen and pop up menu
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -303,8 +319,12 @@ public class MainActivity extends Activity {
         }
     }
     
+    /**
+     * Creates a new presentation
+     */
     public void createNewPresentation()
     {
+    	//alert box to confirm user wants new presentation
     	AlertDialog.Builder alert= new AlertDialog.Builder(this);
     	alert.setTitle("Create new Presentation?");
     	alert.setMessage("Are you Sure?");
@@ -338,6 +358,9 @@ public class MainActivity extends Activity {
     	
     }
     
+    /**
+     * Adds a new slide to the presentation. If presentation is not saved, saved dialog will pop up.
+     */
     public void createNewSlide()
     {
     	if(!isSaved)
@@ -351,13 +374,18 @@ public class MainActivity extends Activity {
     	mSCanvas.clearScreen();
     }
     
+    /**
+     * Options dialog will pop up with all the possible user options
+     */
     public void optionsDialog()
     {
+    	//set up dialog box
     	final Dialog myDialog = new Dialog(MainActivity.this);
         myDialog.setCancelable(true);
         myDialog.setTitle("Options");
         myDialog.setContentView(R.layout.dialog_layout);
         
+        //Button for text input
         Button textButton = (Button) myDialog.findViewById (R.id.textButton);
         textButton.setText("Text Mode");
         textButton.setOnClickListener( new OnClickListener() {
@@ -368,6 +396,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        //Button for pen mode
         Button drawButton = (Button) myDialog.findViewById (R.id.drawButton);
         drawButton.setText("Pen Mode");
         drawButton.setOnClickListener( new OnClickListener() {
@@ -380,6 +409,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        //button for eraser mode
         Button eraseButton = (Button) myDialog.findViewById (R.id.eraseButton);
         eraseButton.setText("Eraser Mode");
         eraseButton.setOnClickListener( new OnClickListener() {
@@ -390,6 +420,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        //button for cancel
         Button cancelButton = (Button) myDialog.findViewById (R.id.cancelButton);
         cancelButton.setText("Cancel");
         cancelButton.setOnClickListener( new OnClickListener() {
@@ -400,6 +431,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        //button to export presentation
         Button exportButton = (Button) myDialog.findViewById (R.id.exportButton);
         exportButton.setText("Export");
         exportButton.setOnClickListener( new OnClickListener() {
@@ -411,6 +443,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        //Button to save presentation/slide
         Button saveButton = (Button) myDialog.findViewById (R.id.saveButton);
         saveButton.setText("Save");
         saveButton.setOnClickListener( new OnClickListener() {
@@ -422,6 +455,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        //button to undo
         Button undoButton = (Button) myDialog.findViewById (R.id.undoButton);
         undoButton.setText("Undo");
         undoButton.setOnClickListener( new OnClickListener() {
@@ -433,6 +467,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        //button to clear screen
         Button clearButton = (Button) myDialog.findViewById (R.id.clearButton);
         clearButton.setText("Clear");
         clearButton.setOnClickListener( new OnClickListener() {
@@ -444,6 +479,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        //button to insert image
         Button pictureButton = (Button) myDialog.findViewById (R.id.pictureButton);
         pictureButton.setText("Insert Picture");
         pictureButton.setOnClickListener( new OnClickListener() {
@@ -455,6 +491,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        //button to load presentation
         Button loadButton = (Button) myDialog.findViewById (R.id.loadButton);
         loadButton.setText("Load");
         loadButton.setOnClickListener( new OnClickListener() {
@@ -466,10 +503,13 @@ public class MainActivity extends Activity {
             }
         });
         
-        
+        //displays dialog box
         myDialog.show();     
     }
     
+    /**
+     * Starts DisplayFileActivity to select which presentation to export out. 
+     */
     public void exportProject()
     {
     	Intent intent = new Intent(MainActivity.this, DisplayFileActivity.class);
@@ -477,6 +517,9 @@ public class MainActivity extends Activity {
     	startActivityForResult(intent, 2);
     }
     
+    /**
+     * Starts DisplayFileActivity to slect with presentation and which slide ot load
+     */
     public void loadFile()
     {
     	Intent intent = new Intent(MainActivity.this, DisplayFileActivity.class);
@@ -484,6 +527,9 @@ public class MainActivity extends Activity {
         startActivityForResult(intent, 1);
     }
     
+    /**
+     * Opens Gallery to decide which image to import into the presentation
+     */
     public void openGallery() {
     	Intent intent = new Intent(Intent.ACTION_PICK,
                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -493,46 +539,58 @@ public class MainActivity extends Activity {
     	startActivityForResult(intent, IMG_REQ_CODE);
     }
     
+    /**
+     * ALert a dialog opens to confirm save and enter name of presentation.
+     */
     public void saveDialog()
     {
-    	if(!isSaved)
-    	{
-        AlertDialog.Builder alert= new AlertDialog.Builder(this);
-    	alert.setTitle("Save As");
-    	alert.setMessage("Enter Name");
-    	final EditText input = new EditText(this);
-    	alert.setView(input);
-    	
-    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+	    	//If presentation is not currently saves
+	    	if(!isSaved)
+	    	{
+	    		//set up dialog
+	        AlertDialog.Builder alert= new AlertDialog.Builder(this);
+	    	alert.setTitle("Save As");
+	    	alert.setMessage("Enter Name");
+	    	final EditText input = new EditText(this);
+	    	alert.setView(input);
+	    	
+	    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 				
-				savedName = input.getText().toString();
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					
+					//save presentation with inputed name
+					savedName = input.getText().toString();				
+					screenCapture(input.getText().toString());
+				}
+			});
+	    	
+	    	//option is canceled
+	    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 				
-				screenCapture(input.getText().toString());
-			}
-		});
-    	
-    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
-				
-			}
-		});
-    	alert.show();
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+					
+				}
+			});
+	    	//show alert
+	    	alert.show();
     	}
     	else
     	{
+    		//else ave current slide to presentation
     		screenCapture(savedName);
     	}
      }
     
+    /**
+     * Pop up alert to confirm that user wants to clear screen
+     */
     public void clearDialog()
     {
+    	//set up dialog
         AlertDialog.Builder alert= new AlertDialog.Builder(this);
     	alert.setTitle("Clear");
     	alert.setMessage("Are you Sure?");
@@ -558,12 +616,20 @@ public class MainActivity extends Activity {
     	alert.show();
      }
     
+    /**
+     * Saved slide as a PNG file in sdcard folder on device.
+     * @param fileName Name of slide to be exported
+     */
     public void exportFile(String fileName)
     {
+    	//gets canvas container and sets cache
 		View content = findViewById(R.id.canvas_container);
      	Bitmap bitmap = content.getDrawingCache(true);
+     	
+     	//creates a new file 
     	File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+fileName);
     	try {
+    		//outputs files as bitmap in PNGformat
 			file.createNewFile();
 			FileOutputStream outStream = new FileOutputStream(file);
 			bitmap.compress(CompressFormat.PNG, 100, outStream);
@@ -576,6 +642,9 @@ public class MainActivity extends Activity {
     }
     
     @Override
+    /**
+     * Does a certain action after receiving a  code from another activity
+     */
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
     	super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
@@ -663,7 +732,7 @@ public class MainActivity extends Activity {
     	        	}
         			break;
         			
-        	    case 1234:
+        	    case 1234: //Loading a picture to the canvas
         	        Uri pictureUri = data.getData();
         			try {
         				
@@ -709,16 +778,27 @@ public class MainActivity extends Activity {
         //It will also wipe any redo() history.
         mSCanvas.loadSAMMData(mSCanvas.saveSAMMData());
         
+        
+        //System.out.println(saveFile);
+        //mSCanvas.saveSAMMFile(saveFile);
+        //mSCanvas.loadSAMMFile(saveFile, true, true);
+        
         mSCanvas.setAnimationMode(true);
         mSCanvas.setAnimationSpeed(animationSpeed);
         mSCanvas.doAnimationStart();
     }
     
+    /**
+     * decrease animation speed. Not used currently
+     */
     public void slowDownAnimation() {
         if (animationSpeed > SLOWEST_SPEED)
             mSCanvas.setAnimationSpeed(--animationSpeed);
     }
     
+    /**
+     * increase animation speed. Not used currently
+     */
     public void speedUpAnimation() {
         if (animationSpeed < FASTEST_SPEED)
             mSCanvas.setAnimationSpeed(++animationSpeed);
