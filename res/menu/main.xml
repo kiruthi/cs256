@@ -89,6 +89,12 @@
         android:id="@+id/penSettings"
         android:orderInCategory="119"
         android:showAsAction="never"
-        android:title="@string/penSettingsText"/> 
+        android:title="@string/penSettingsText"/>
+    
+    <item
+        android:id="@+id/selectorMode"
+        android:orderInCategory="119"
+        android:showAsAction="never"
+        android:title="@string/selectorModeText"/> 
     
 </menu>

@@ -295,6 +295,9 @@ public class MainActivity extends Activity {
             case R.id.penSettings:
                 mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_PEN);
             	return true;
+            case R.id.selectorMode:
+                mSCanvas.setMultiSelectionMode(true);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -705,11 +708,6 @@ public class MainActivity extends Activity {
         //This line ensures that the animation plays only up to the current state.
         //It will also wipe any redo() history.
         mSCanvas.loadSAMMData(mSCanvas.saveSAMMData());
-        
-        
-        //System.out.println(saveFile);
-        //mSCanvas.saveSAMMFile(saveFile);
-        //mSCanvas.loadSAMMFile(saveFile, true, true);
         
         mSCanvas.setAnimationMode(true);
         mSCanvas.setAnimationSpeed(animationSpeed);

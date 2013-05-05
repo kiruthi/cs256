@@ -33,5 +33,6 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_display_file">Files to load</string>
     <string name="penSettingsText">Pen Settings</string>
+    <string name="selectorModeText">Selector Mode</string>
 
 </resources>
