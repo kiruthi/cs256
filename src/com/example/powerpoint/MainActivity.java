@@ -27,6 +27,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -659,13 +660,23 @@ public class MainActivity extends Activity {
         			
         	    case 1234:
         	        Uri pictureUri = data.getData();
-                    
         			try {
-        			    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
-        			    int byteSize = bitmap.getByteCount();
-        			    
-        			    if(byteSize < 5243000)
-        			    {
+        				
+        				//get the file path to retrieve the file to find out its size in bytes
+        				//stackoverflow.com/questions/6016000/how-to-open-phones-gallery-through-code
+        				String[] filePC ={MediaStore.Images.Media.DATA};
+        				Cursor cursor = getContentResolver().query(pictureUri, filePC, null, null, null);
+        				cursor.moveToFirst();
+        				String filePath =cursor.getString(cursor.getColumnIndex(filePC[0]));
+        				File f = new File(filePath);
+        				//System.out.println(filePath);
+        				//System.out.println(f.length());       				
+        			       			    
+        			 
+        				//file limit set to 1.5mb
+        			    if(f.length()< 1572864)
+        			    {	
+        			    	Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
 	        			    RectF rectF = new RectF(0, 0, 200, 200); //Position and size of image
 	        			    SObjectImage sImageObject = new SObjectImage();
 	        			    sImageObject.setRect(rectF);
