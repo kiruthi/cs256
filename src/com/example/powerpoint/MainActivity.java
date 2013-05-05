@@ -282,13 +282,17 @@ public class MainActivity extends Activity {
             	openGallery();
             	return true;
             case R.id.action2:
+            	
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_TEXT);
+                mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_TEXT);
             	return true;
             case R.id.action3:
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
+                mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_PEN);
                 return true;
-            case R.id.action4:
+            case R.id.action4:            	
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
+                mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_ERASER);
                 return true;
             case R.id.action5:
                 loadFile();
@@ -308,9 +312,10 @@ public class MainActivity extends Activity {
             case R.id.options:
             	optionsDialog();
             	return true;
+           /* 	
             case R.id.penSettings:
                 mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_PEN);
-            	return true;
+            	return true;*/
             case R.id.selectorMode:
                 mSCanvas.setMultiSelectionMode(true);
                 return true;
@@ -398,6 +403,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View arg0) {
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_TEXT);
+                mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_TEXT);
                 myDialog.dismiss();
             }
         });
@@ -407,10 +413,10 @@ public class MainActivity extends Activity {
         drawButton.setText("Pen Mode");
         drawButton.setOnClickListener( new OnClickListener() {
             @Override
-            public void onClick(View arg0) {
-            	
+            public void onClick(View arg0) {   	
             	
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
+                mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_PEN);
                 myDialog.dismiss();
             }
         });
@@ -422,6 +428,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View arg0) {
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
+                mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_ERASER);
                 myDialog.dismiss();
             }
         });
