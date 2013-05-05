@@ -36,5 +36,7 @@
     <string name="selectorModeText">Selector Mode</string>
     <string name="groupText">Group Objects</string>
     <string name="ungroupText">Ungroup Objects</string>
+    <string name="voiceOverText">Record Voice-Over</string>
+    <string name="playText">Play</string>
 
 </resources>

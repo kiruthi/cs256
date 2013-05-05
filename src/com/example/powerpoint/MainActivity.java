@@ -19,6 +19,7 @@ import com.samsung.spensdk.applistener.SCanvasInitializeListener;
 import com.samsung.spensdk.applistener.SPenHoverListener;
 import com.samsung.spensdk.applistener.SPenTouchListener;
 
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,6 +28,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -43,6 +45,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -68,8 +71,8 @@ public class MainActivity extends Activity {
     private SCanvasView mSCanvas;
     private int animationSpeed;
     private SOptionSCanvas options;
-
-    private HashMap<String,Integer> settingResourceMapInt = new HashMap<String, Integer>();
+    AudioManager audioManager;
+    private HashMap<String,Integer> settingResourceMapInt;
    // private String saveFile;
     
     @Override
@@ -92,6 +95,7 @@ public class MainActivity extends Activity {
         options.mPlayOption.setSoundEffectOption(false); //Disable artificial sound effects
         mCanvasContainer = (RelativeLayout) findViewById(R.id.canvas_container);
         mSCanvas = new SCanvasView(this);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         
         //Initialize resources to enable color picker
         settingResourceMapInt = new HashMap<String, Integer>();
@@ -111,7 +115,10 @@ public class MainActivity extends Activity {
                     @Override
                     //This method runs immediately after the animation finishes playing
                     public void onPlayComplete() {
+                        mSCanvas.recordVoiceComplete();
+                        mSCanvas.setBGAudioAsRecordedVoice();
                         mSCanvas.setAnimationMode(false); //Enable drawing again
+                        //audioManager.setSpeakerphoneOn(false);
                     }
                     
                     @Override
@@ -282,13 +289,13 @@ public class MainActivity extends Activity {
             	openGallery();
             	return true;
             case R.id.action2:
-            	
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_TEXT);
                 mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_TEXT);
             	return true;
             case R.id.action3:
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
                 mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_PEN);
+                previewAnimation();
                 return true;
             case R.id.action4:            	
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
@@ -324,6 +331,16 @@ public class MainActivity extends Activity {
                 return true;
             case R.id.ungroup:
                 mSCanvas.ungroupSelectedObjects();
+                return true;
+            case R.id.voiceOver:
+                audioManager.setSpeakerphoneOn(true); //This is not working?!
+                mSCanvas.clearBGAudio();
+                mSCanvas.setAnimationMode(true);
+                mSCanvas.recordVoiceStart();
+                previewAnimation();
+                return true;
+            case R.id.play:
+                previewAnimation();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -787,15 +804,6 @@ public class MainActivity extends Activity {
     //Need to find a way to redo() after previewing the animation. Perhaps keep
     //a history of saveSammData()?.
     public void previewAnimation() {
-        //This line ensures that the animation plays only up to the current state.
-        //It will also wipe any redo() history.
-        mSCanvas.loadSAMMData(mSCanvas.saveSAMMData());
-        
-        
-        //System.out.println(saveFile);
-        //mSCanvas.saveSAMMFile(saveFile);
-        //mSCanvas.loadSAMMFile(saveFile, true, true);
-        
         mSCanvas.setAnimationMode(true);
         mSCanvas.setAnimationSpeed(animationSpeed);
         mSCanvas.doAnimationStart();

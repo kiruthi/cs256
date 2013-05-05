@@ -107,6 +107,18 @@
         android:id="@+id/ungroup"
         android:orderInCategory="123"
         android:showAsAction="never"
-        android:title="@string/ungroupText"/> 
+        android:title="@string/ungroupText"/>
+    
+    <item
+        android:id="@+id/voiceOver"
+        android:orderInCategory="124"
+        android:showAsAction="never"
+        android:title="@string/voiceOverText"/>
+    
+    <item
+        android:id="@+id/play"
+        android:orderInCategory="125"
+        android:showAsAction="never"
+        android:title="@string/playText"/>
     
 </menu>
