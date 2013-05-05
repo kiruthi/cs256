@@ -83,6 +83,12 @@
         android:id="@+id/options"
         android:orderInCategory="119"
         android:showAsAction="never"
-        android:title="@string/optionsText"/>  
+        android:title="@string/optionsText"/>
+    
+    <item
+        android:id="@+id/penSettings"
+        android:orderInCategory="119"
+        android:showAsAction="never"
+        android:title="@string/penSettingsText"/> 
     
 </menu>

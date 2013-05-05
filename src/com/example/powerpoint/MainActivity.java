@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.samsung.samm.common.SObjectImage;
@@ -65,6 +66,7 @@ public class MainActivity extends Activity {
     private SOptionSCanvas options;
     private boolean isSaved = false;
     private String savedName;
+    private HashMap<String,Integer> settingResourceMapInt = new HashMap<String, Integer>();
    // private String saveFile;
     
     @Override
@@ -84,7 +86,11 @@ public class MainActivity extends Activity {
         options.mPlayOption.setSoundEffectOption(false); //Disable artificial sound effects
         mCanvasContainer = (RelativeLayout) findViewById(R.id.canvas_container);
         mSCanvas = new SCanvasView(this);
-         
+        
+        //Initialize resources to enable color picker
+        settingResourceMapInt = new HashMap<String, Integer>();
+        settingResourceMapInt.put( SCanvasConstants.LAYOUT_PEN_SPINNER, R.layout.activity_main );
+        mSCanvas.createSettingView( mCanvasContainer, settingResourceMapInt);
         
         mSCanvas.setSCanvasInitializeListener(new SCanvasInitializeListener() {
             @Override
@@ -173,12 +179,6 @@ public class MainActivity extends Activity {
       //change background to white
         mSCanvas.setBackgroundColor(Color.WHITE);
         mSCanvas.setBGColor(Color.WHITE);
-        
-        
-        //File folder = getBaseContext().getCacheDir();
-        //String folderPath = folder.getAbsolutePath();
-        //System.out.println(folderPath);
-        //saveFile = folderPath + "/" + "SAMM.data";
     }
     
     @Override
@@ -288,10 +288,12 @@ public class MainActivity extends Activity {
             	return true;
             case R.id.action9:
             	createNewPresentation();
-            	return true;
-                
+            	return true;          
             case R.id.options:
             	optionsDialog();
+            	return true;
+            case R.id.penSettings:
+                mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_PEN);
             	return true;
             default:
                 return super.onOptionsItemSelected(item);
