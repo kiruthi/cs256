@@ -95,8 +95,8 @@ public class MainActivity extends Activity {
         
         //Initialize resources to enable color picker
         settingResourceMapInt = new HashMap<String, Integer>();
-        settingResourceMapInt.put( SCanvasConstants.LAYOUT_PEN_SPINNER, R.layout.activity_main );
-        mSCanvas.createSettingView( mCanvasContainer, settingResourceMapInt);
+        settingResourceMapInt.put(SCanvasConstants.LAYOUT_PEN_SPINNER, R.layout.activity_main);
+        mSCanvas.createSettingView(mCanvasContainer, settingResourceMapInt);
         
         mSCanvas.setSCanvasInitializeListener(new SCanvasInitializeListener() {
             @Override
@@ -313,6 +313,12 @@ public class MainActivity extends Activity {
             	return true;
             case R.id.selectorMode:
                 mSCanvas.setMultiSelectionMode(true);
+                return true;
+            case R.id.group:
+                mSCanvas.groupSAMMObjectList(mSCanvas.getSelectedSObjectList(), true);
+                return true;
+            case R.id.ungroup:
+                mSCanvas.ungroupSelectedObjects();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

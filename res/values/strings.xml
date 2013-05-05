@@ -34,5 +34,7 @@
     <string name="title_activity_display_file">Files to load</string>
     <string name="penSettingsText">Pen Settings</string>
     <string name="selectorModeText">Selector Mode</string>
+    <string name="groupText">Group Objects</string>
+    <string name="ungroupText">Ungroup Objects</string>
 
 </resources>

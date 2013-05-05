@@ -87,14 +87,26 @@
     
     <item
         android:id="@+id/penSettings"
-        android:orderInCategory="119"
+        android:orderInCategory="120"
         android:showAsAction="never"
         android:title="@string/penSettingsText"/>
     
     <item
         android:id="@+id/selectorMode"
-        android:orderInCategory="119"
+        android:orderInCategory="121"
         android:showAsAction="never"
-        android:title="@string/selectorModeText"/> 
+        android:title="@string/selectorModeText"/>
+    
+    <item
+        android:id="@+id/group"
+        android:orderInCategory="122"
+        android:showAsAction="never"
+        android:title="@string/groupText"/>
+    
+    <item
+        android:id="@+id/ungroup"
+        android:orderInCategory="123"
+        android:showAsAction="never"
+        android:title="@string/ungroupText"/> 
     
 </menu>
