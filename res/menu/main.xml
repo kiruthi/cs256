@@ -1,10 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-     <item
+
+
+     <ImageButton
         android:id="@+id/action1"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/action7"
-        android:icon="@drawable/image"/>
+        android:background="@drawable/image"/>
     
     <item
         android:id="@+id/action2"
