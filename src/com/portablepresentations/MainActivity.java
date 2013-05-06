@@ -68,6 +68,7 @@ public class MainActivity extends Activity {
     private boolean isSaved = false;
     private boolean isNewSlide = false;
     private boolean isSaveCalled = false;
+    private boolean isNewPres = false;
     private String savedName;
     
     //SCanvas variables
@@ -315,7 +316,7 @@ public class MainActivity extends Activity {
       		
       		if(mSCanvas.saveSAMMFile(savefName))
       		{
-      			if(!isSaved && isNewSlide)
+      			if(!isSaved && isNewSlide  && !isNewPres)
       			{
       				refreshSlideList();
       			}
@@ -344,6 +345,15 @@ public class MainActivity extends Activity {
       			else
       			{
       				isSaveCalled = false;
+      			}
+      			
+      			if(isNewPres)
+      			{
+      				savedName = "";
+    		    	isSaved = false;
+    		    	slideNo = 0;
+    		    	maxSlideNo = 0;
+      				isNewPres = false;
       			}
       		}
       		else
@@ -460,8 +470,8 @@ public class MainActivity extends Activity {
     public void createNewPresentation()
     {
     	AlertDialog.Builder alert= new AlertDialog.Builder(this);
-    	alert.setTitle("Create new Presentation?");
-    	alert.setMessage("Are you Sure?");
+    	alert.setTitle("New Presentation");
+    	alert.setMessage("Do you want to save current changes?");
     	
     	alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			

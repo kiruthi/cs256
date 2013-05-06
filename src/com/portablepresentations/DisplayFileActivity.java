@@ -6,6 +6,8 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
@@ -63,19 +65,87 @@ public class DisplayFileActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
-				/*Intent intent = new Intent();
-				intent.putExtra("file", arg2);
-                setResult(Activity.RESULT_OK, intent);
-                finish();*/
 				if(option.equalsIgnoreCase("load"))
+				{
 					listSlides(arg2);
+				}
+				else if(option.equalsIgnoreCase("delete"))
+				{
+					deletePres(arg2);
+				}
 				else
+				{
 					exportFiles(arg2);
+				}
 				
 			}
     		
 		});
 	}
+	
+	/**
+	 * Method to delete the selected presentation
+	 * @param presNo
+	 */
+	
+	public void deletePres(final int presNo)
+	{
+		
+		//set up dialog
+        AlertDialog.Builder alert= new AlertDialog.Builder(this);
+    	alert.setTitle("Delete Presentation");
+    	alert.setMessage("Are you Sure?");
+    	
+    	alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				//Presentations directory is retrieved and all directories in that folder are obtained
+				File dir = getBaseContext().getDir("spen", 0);
+				File[] subFiles = dir.listFiles();
+				
+				if(presNo < subFiles.length)
+				{
+					dir = new File(dir.getAbsoluteFile() + "/" + subFiles[presNo].getName());
+					
+					if(dir.exists())
+					{
+						File[] files = dir.listFiles();
+						
+						for(File file : files)
+						{
+							file.delete();
+						}
+						
+						dir.delete();
+					}
+				}
+				
+				Intent intent = new Intent();
+				intent.putExtra("status", "ok");
+		        setResult(Activity.RESULT_OK, intent);
+		        finish();
+			}
+		});
+    	
+    	alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+				Intent intent = new Intent();
+				intent.putExtra("status", "no");
+		        setResult(Activity.RESULT_OK, intent);
+		        finish();
+				
+			}
+		});
+    	alert.show();
+		
+	}
+	
 	
 	/**
 	 *  Users select the presentation they want export out. The path to the presentation directory is passed back to 

@@ -29,9 +29,10 @@
     <string name="loadButtonTextString">Load a previous slide</string>    
     <string name="undoButtonTextString">Undo a previous command</string>
     <string name="exportButtonTextString">Export project to png files</string>
+    <string name="delPresButtonTextString">Deletes the selected presentation</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_display_file">Files to load</string>
+    <string name="title_activity_display_file">Files</string>
     <string name="penSettingsText">Pen Settings</string>
     <string name="selectorModeText">Selector Mode</string>
     <string name="groupText">Group Objects</string>
