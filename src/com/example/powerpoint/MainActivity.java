@@ -3,8 +3,6 @@ package com.example.powerpoint;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,7 +33,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.RectF;
@@ -798,20 +795,30 @@ public class MainActivity extends Activity {
     public void exportFile(String fileName)
     {
     	//gets canvas container and sets cache
-		View content = findViewById(R.id.canvas_container);
-     	Bitmap bitmap = content.getDrawingCache(true);
+		/*View content = findViewById(R.id.canvas_container);
+		
+		Bitmap bitmap = Bitmap.createBitmap(
+				2000, 800, Bitmap.Config.ARGB_8888);     
+		
+		Canvas canvas = new Canvas(bitmap);
+		
+		content.layout(0, 0, 2000, 800);
+		content.draw(canvas);*/
+        
+//     	Bitmap bitmap = content.getDrawingCache(true);
      	
      	//creates a new file 
-    	File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+fileName);
+//    	File file = new File(Environment.getExternalStorageDirectory().getPath()+"/"+fileName);
     	try {
     		//outputs files as bitmap in PNGformat
-			file.createNewFile();
+			/*file.createNewFile();
 			FileOutputStream outStream = new FileOutputStream(file);
 			bitmap.compress(CompressFormat.PNG, 100, outStream);
-			outStream.close();
+			outStream.close();*/
+    		
+    		mSCanvas.saveSAMMFile(Environment.getExternalStorageDirectory().getPath()+"/"+fileName);
 			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
     }
