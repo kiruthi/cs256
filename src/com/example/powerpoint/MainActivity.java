@@ -416,7 +416,7 @@ public class MainActivity extends Activity {
            /* 	
             case R.id.penSettings:
                 mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_PEN);
-            	return true;*/
+            	return true;
             case R.id.selectorMode:
                 mSCanvas.setMultiSelectionMode(true);
                 return true;
@@ -425,7 +425,7 @@ public class MainActivity extends Activity {
                 return true;
             case R.id.ungroup:
                 mSCanvas.ungroupSelectedObjects();
-                return true;
+                return true;*/
             case R.id.voiceOver:
                 audioManager.setSpeakerphoneOn(true); //This is not working?!
                 mSCanvas.clearBGAudio();
@@ -554,7 +554,8 @@ public class MainActivity extends Activity {
         myDialog.setCancelable(true);
         myDialog.setTitle("Options");
         myDialog.setContentView(R.layout.dialog_layout);
-        
+     
+  /**      
         //Button for text input
         Button textButton = (Button) myDialog.findViewById (R.id.textButton);
         textButton.setText("Text Mode");
@@ -591,7 +592,7 @@ public class MainActivity extends Activity {
                 myDialog.dismiss();
             }
         });
-        
+     **/   
         //button for cancel
         Button cancelButton = (Button) myDialog.findViewById (R.id.cancelButton);
         cancelButton.setText("Cancel");
@@ -615,6 +616,7 @@ public class MainActivity extends Activity {
             }
         });
         
+  /**
         //Button to save presentation/slide
         Button saveButton = (Button) myDialog.findViewById (R.id.saveButton);
         saveButton.setText("Save");
@@ -626,6 +628,7 @@ public class MainActivity extends Activity {
             	myDialog.dismiss();              
             }
         });
+  */
         
         //button to undo
         Button undoButton = (Button) myDialog.findViewById (R.id.undoButton);
@@ -650,7 +653,8 @@ public class MainActivity extends Activity {
             	myDialog.dismiss();              
             }
         });
-        
+  
+ /**       
         //button to insert image
         Button pictureButton = (Button) myDialog.findViewById (R.id.pictureButton);
         pictureButton.setText("Insert Picture");
@@ -663,6 +667,7 @@ public class MainActivity extends Activity {
             }
         });
         
+        
         //button to load presentation
         Button loadButton = (Button) myDialog.findViewById (R.id.loadButton);
         loadButton.setText("Load");
@@ -674,7 +679,39 @@ public class MainActivity extends Activity {
                 myDialog.dismiss();
             }
         });
+ */       
+        Button selectorButton = (Button) myDialog.findViewById (R.id.selectorButton);
+        selectorButton.setText("Selector Tool");
+        selectorButton.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            	mSCanvas.setMultiSelectionMode(true);
+                myDialog.dismiss();
+            }
+        });
         
+        Button groupButton = (Button) myDialog.findViewById (R.id.groupButton);
+        groupButton.setText("Group Items");
+        groupButton.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            	mSCanvas.groupSAMMObjectList(mSCanvas.getSelectedSObjectList(), true);
+                myDialog.dismiss();
+            }
+        });
+        
+        Button ungroupButton = (Button) myDialog.findViewById (R.id.ungroupButton);
+        ungroupButton.setText("Ungroup Item");
+        ungroupButton.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            	mSCanvas.ungroupSelectedObjects();
+                myDialog.dismiss();
+            }
+        });
         //displays dialog box
         myDialog.show();     
     }

@@ -9,7 +9,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical" >
-	
+<!--  	
 	    <Button
 	        android:id="@+id/drawButton"
 	        android:layout_width="wrap_content"
@@ -70,22 +70,9 @@
 	        android:layout_toRightOf="@id/eraseButton"
 	        android:layout_alignBottom="@id/eraseButton"
 	        android:text="@string/eraseButtonTextString" />
-	    
-	    <Button
-	        android:id="@+id/undoButton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_below="@id/eraseButton" 
-	        android:width="150dp"/>
-	     <TextView
-	        android:id="@+id/undoButtonTextView"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@id/undoButton"
-	        android:layout_alignBottom="@id/undoButton"
-	        android:text="@string/undoButtonTextString" />
-	    
+	  -->  
+	   
+<!--      
 	    <Button
 	        android:id="@+id/saveButton"
 	        android:layout_width="wrap_content"
@@ -115,13 +102,58 @@
 	        android:layout_toRightOf="@id/loadButton"
 	        android:layout_alignBottom="@id/loadButton"
 	        android:text="@string/loadButtonTextString" />
+	-->	
+	         
+	     <Button
+	        android:id="@+id/selectorButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true" 
+	        android:width="150dp"/>
+	     <TextView
+	        android:id="@+id/selectorButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/selectorButton"
+	        android:layout_alignBottom="@id/selectorButton"
+	        android:text="@string/selectorButtonTextString" />
+	     
+	     <Button
+	        android:id="@+id/groupButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"	        	        
+	        android:layout_below="@id/selectorButton" 
+	        android:width="150dp"/>
+	     <TextView
+	        android:id="@+id/groupButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/groupButton"
+	        android:layout_alignBottom="@id/groupButton"
+	        android:text="@string/groupButtonTextString" />
+	     
+	     <Button
+	        android:id="@+id/ungroupButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"	        	        
+	        android:layout_below="@id/groupButton" 
+	        android:width="150dp"/>
+	     <TextView
+	        android:id="@+id/unButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/ungroupButton"
+	        android:layout_alignBottom="@id/ungroupButton"
+	        android:text="@string/ungroupButtonTextString" />
 	     
 	     <Button
 	        android:id="@+id/exportButton"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@id/loadButton" 
+	        android:layout_below="@id/ungroupButton"
 	        android:width="150dp"/>
 	     <TextView
 	        android:id="@+id/exportButtonTextView"
@@ -129,14 +161,30 @@
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@id/exportButton"
 	        android:layout_alignBottom="@id/exportButton"
-	        android:text="@string/exportButtonTextString" />
+	        android:text="@string/exportButtonTextString" />	
+	     
+	      <Button
+	        android:id="@+id/undoButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@id/exportButton" 
+	        android:width="150dp"/>
+	     <TextView
+	        android:id="@+id/undoButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/undoButton"
+	        android:layout_alignBottom="@id/undoButton"
+	        android:text="@string/undoButtonTextString" />
+	     
 	     
 	      <Button
 	        android:id="@+id/clearButton"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@id/exportButton" 
+	        android:layout_below="@id/undoButton" 
 	        android:width="150dp"/>
 	     <TextView
 	        android:id="@+id/clearButtonTextView"

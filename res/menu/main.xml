@@ -99,7 +99,7 @@
         android:orderInCategory="120"
         android:showAsAction="never"
         android:title="@string/penSettingsText"/>
--->      
+    
     <item
         android:id="@+id/selectorMode"
         android:orderInCategory="121"
@@ -117,7 +117,7 @@
         android:orderInCategory="123"
         android:showAsAction="never"
         android:title="@string/ungroupText"/>
-    
+   -->  
     <item
         android:id="@+id/voiceOver"
         android:orderInCategory="124"
