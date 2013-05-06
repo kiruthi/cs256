@@ -403,11 +403,11 @@ public class MainActivity extends Activity {
                 clearDialog();
                 return true; 
             case R.id.action8:
-            	//createNewSlide();
-                pauseResume();
+            	createNewSlide();
+                //pauseResume();
             	return true;
             case R.id.action9:
-            	//createNewPresentation();
+            	createNewPresentation();
             	return true;          
             case R.id.options:
             	optionsDialog();
@@ -945,26 +945,36 @@ public class MainActivity extends Activity {
         			break;
         			
         		case 2://Exporting Project files to png
-        			String dirPath = data.getStringExtra("dirPath");     
-        			File directory	= new File(dirPath);
-        			String dirName = directory.getName();
-        	    	File[] files = directory.listFiles();
-        	    
-    	        	if (files != null)
-    	        	{
-    	        		Toast t = Toast.makeText(getApplicationContext(), "Exporting Now. Please Wait.", Toast.LENGTH_SHORT);
-    	        		t.show();
-    	        	    for (File file : files)
-    	        	    {
-    	        	    	mSCanvas.loadSAMMFile(directory.getAbsolutePath() + "/" + file.getName(),true);
-    	        	    	exportFile(dirName+file.getName());
-    	        	    }
-    	        	}	
-    	        	else
-    	        	{
-    	        		Toast t = Toast.makeText(getApplicationContext(), "No Files in Project. Please check project.", Toast.LENGTH_SHORT);
-    	        		t.show();
-    	        	}
+        			String dirPath = data.getStringExtra("dirPath"); 
+        			int dirNum = data.getIntExtra("dir", 0);
+        	    	
+        	    	if(dirNum == -1)
+        	    	{
+        	    		Toast.makeText(MainActivity.this, "No Saved Projects Found!", Toast.LENGTH_LONG).show();
+        	    	}
+        	    	else
+        	    	{
+        	    		File directory	= new File(dirPath);
+            			String dirName = directory.getName();
+            	    	File[] files = directory.listFiles();
+            	    
+        	        	if (files != null)
+        	        	{
+        	        		Toast t = Toast.makeText(getApplicationContext(), "Exporting Now. Please Wait.", Toast.LENGTH_SHORT);
+        	        		t.show();
+        	        	    for (File file : files)
+        	        	    {
+        	        	    	mSCanvas.loadSAMMFile(directory.getAbsolutePath() + "/" + file.getName(),true);
+        	        	    	exportFile(dirName+file.getName());
+        	        	    }
+        	        	}	
+        	        	else
+        	        	{
+        	        		Toast t = Toast.makeText(getApplicationContext(), "No Files in Project. Please check project.", Toast.LENGTH_SHORT);
+        	        		t.show();
+        	        	}
+        	    	}
+        			
         			break;
         			
         	    case 1234: //Loading a picture to the canvas

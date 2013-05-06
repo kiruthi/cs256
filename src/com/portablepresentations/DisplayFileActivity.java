@@ -108,6 +108,7 @@ public class DisplayFileActivity extends Activity {
     
     	//Intent with desired presentations path is set to return to main activity
     	Intent intent = new Intent();
+		intent.putExtra("dir", 0);
 		intent.putExtra("dirPath", dir.getAbsolutePath());
         setResult(Activity.RESULT_OK, intent);
         
