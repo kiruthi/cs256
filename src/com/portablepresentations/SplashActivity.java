@@ -1,8 +1,6 @@
 
 package com.portablepresentations;
 
-import com.example.powerpoint.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;

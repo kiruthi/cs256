@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.powerpoint.R;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;

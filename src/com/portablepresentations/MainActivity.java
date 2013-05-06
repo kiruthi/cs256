@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import com.example.powerpoint.R;
 import com.samsung.samm.common.SObjectImage;
 import com.samsung.samm.common.SOptionPlay;
 import com.samsung.samm.common.SOptionSCanvas;
