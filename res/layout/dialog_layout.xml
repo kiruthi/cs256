@@ -4,11 +4,11 @@
     android:layout_height="fill_parent"
      xmlns:android="http://schemas.android.com/apk/res/android">
     
-	
-	<RelativeLayout 
+	<RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical" >
+
 <!--  	
 	    <Button
 	        android:id="@+id/drawButton"
@@ -193,13 +193,28 @@
 	        android:layout_toRightOf="@id/clearButton"
 	        android:layout_alignBottom="@id/clearButton"
 	        android:text="@string/clearButtonTextString" />
+	     
+	     <Button
+	        android:id="@+id/deletePresButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@id/clearButton" 
+	        android:width="150dp"/>
+	     <TextView
+	        android:id="@+id/deletePresButtonTextView"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/deletePresButton"
+	        android:layout_alignBottom="@id/deletePresButton"
+	        android:text="@string/delPresButtonTextString" />
 	   
 	     <Button
 	        android:id="@+id/cancelButton"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@id/clearButton" 
+	        android:layout_below="@id/deletePresButton" 
 	        android:width="150dp"/>
 	     <TextView
 	        android:id="@+id/cancelButtonTextView"

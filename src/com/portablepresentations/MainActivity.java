@@ -477,16 +477,11 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				if(isSaved)
-		    	{
-		    		createNewSlide();
-		    	}
-		    	savedName = "";
-		    	isSaved = false;
-		    	slideNo = 0;
-		    	maxSlideNo = 0;
-		    	
+				
+				isNewPres = true;
+				
+				createNewSlide();
+				
 		    	List<String> slideLst = new ArrayList<String>();
 		        slideLst.add("Slide 0");
 		        
@@ -498,8 +493,18 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
+
+				savedName = "";
+		    	isSaved = false;
+		    	slideNo = 0;
+		    	maxSlideNo = 0;
+		    	
+		    	mSCanvas.clearScreen();
+		    	
+		    	List<String> slideLst = new ArrayList<String>();
+		        slideLst.add("Slide 0");
+		        
+		        addItemsToList(slideLst, -1);
 				
 			}
 		});
@@ -616,6 +621,19 @@ public class MainActivity extends Activity {
             }
         });
      **/   
+        
+      //button to delete a presentation
+        Button deletePres = (Button) myDialog.findViewById (R.id.deletePresButton);
+        deletePres.setText("Delete Presentation");
+        deletePres.setOnClickListener( new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+            	deletePresentation();
+            	myDialog.dismiss();              
+            }
+        });
+        
         //button for cancel
         Button cancelButton = (Button) myDialog.findViewById (R.id.cancelButton);
         cancelButton.setText("Cancel");
@@ -737,6 +755,16 @@ public class MainActivity extends Activity {
         });
         //displays dialog box
         myDialog.show();     
+    }
+    
+    /**
+     * Starts DisplayFileActivity to delete a presentation.
+     */
+    public void deletePresentation()
+    {
+    	Intent intent = new Intent(MainActivity.this, DisplayFileActivity.class);
+    	intent.putExtra("option", "delete");
+    	startActivityForResult(intent, 3);
     }
     
     /**
@@ -994,6 +1022,42 @@ public class MainActivity extends Activity {
         	        		t.show();
         	        	}
         	    	}
+        			
+        			break;
+        			
+        		case 3:
+        			
+        			int noOfFiles = data.getIntExtra("dir", 0);
+        			
+        			if(noOfFiles == -1)
+        			{
+        				Toast.makeText(MainActivity.this, "No Files to delete!", Toast.LENGTH_SHORT).show();
+        			}
+        			else
+        			{
+        				String status = data.getStringExtra("status");
+        				
+        				if(status != null && status.equals("ok"))
+        				{
+        					savedName = "";
+            		    	isSaved = false;
+            		    	slideNo = 0;
+            		    	maxSlideNo = 0;
+            		    	
+            		    	mSCanvas.clearScreen();
+            		    	
+            		    	List<String> slideLst = new ArrayList<String>();
+            		        slideLst.add("Slide 0");
+            		        
+            		        addItemsToList(slideLst, -1);
+            		    	
+        					Toast.makeText(MainActivity.this, "Presentation deleted!", Toast.LENGTH_SHORT).show();
+        				}
+        				else
+        				{
+        					Toast.makeText(MainActivity.this, "Delete Cancelled!", Toast.LENGTH_SHORT).show();
+        				}
+        			}
         			
         			break;
         			
