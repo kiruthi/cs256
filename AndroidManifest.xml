@@ -42,7 +42,8 @@
         
         <activity
             android:name="com.portablepresentations.DisplayFileActivity"
-            android:label="@string/title_activity_display_file" >
+            android:label="@string/title_activity_display_file" 
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
