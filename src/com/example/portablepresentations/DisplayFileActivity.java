@@ -1,8 +1,10 @@
-package com.example.powerpoint;
+package com.example.portablepresentations;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.powerpoint.R;
 
 import android.os.Bundle;
 import android.app.Activity;

@@ -1,5 +1,5 @@
 
-package com.example.powerpoint;
+package com.example.portablepresentations;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import com.example.powerpoint.R;
 import com.samsung.samm.common.SObjectImage;
 import com.samsung.samm.common.SOptionPlay;
 import com.samsung.samm.common.SOptionSCanvas;
@@ -93,7 +94,7 @@ public class MainActivity extends Activity {
         View content = findViewById(R.id.canvas_container);
         content.setDrawingCacheEnabled(true);
         
-        animationSpeed = SOptionPlay.ANIMATION_SPEED_NORMAL; //Default speed
+        animationSpeed = SOptionPlay.ANIMATION_SPEED_SLOW;
         options = new SOptionSCanvas();
         options.mPlayOption.setSoundEffectOption(false); //Disable artificial sound effects
         mCanvasContainer = (RelativeLayout) findViewById(R.id.canvas_container);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Powerpoint</string>
+    <string name="app_name">Portable Presentations</string>
     <string name="action1">Play</string>
     <string name="action2">Undo</string>
     <string name="action3">Redo</string>

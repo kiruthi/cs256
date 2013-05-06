@@ -1,5 +1,7 @@
 
-package com.example.powerpoint;
+package com.example.portablepresentations;
+
+import com.example.powerpoint.R;
 
 import android.app.Activity;
 import android.content.Intent;

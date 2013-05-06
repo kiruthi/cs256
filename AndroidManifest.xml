@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme" >
         
         <activity
-            android:name="com.example.powerpoint.MainActivity"
+            android:name="com.example.portablepresentations.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
             <intent-filter>
@@ -31,7 +31,7 @@
         </activity>
         
         <activity
-            android:name="com.example.powerpoint.SplashActivity"
+            android:name="com.example.portablepresentations.SplashActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +41,7 @@
         </activity>
         
         <activity
-            android:name="com.example.powerpoint.DisplayFileActivity"
+            android:name="com.example.portablepresentations.DisplayFileActivity"
             android:label="@string/title_activity_display_file" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
