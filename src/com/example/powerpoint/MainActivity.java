@@ -392,7 +392,6 @@ public class MainActivity extends Activity {
             case R.id.action3:
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
                 mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_PEN);
-                previewAnimation();
                 return true;
             case R.id.action4:            	
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
