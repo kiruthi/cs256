@@ -1,5 +1,5 @@
 
-package com.example.portablepresentations;
+package com.portablepresentations;
 
 import com.example.powerpoint.R;
 

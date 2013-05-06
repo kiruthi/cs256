@@ -1,5 +1,5 @@
 
-package com.example.portablepresentations;
+package com.portablepresentations;
 
 import java.io.File;
 import java.io.FileNotFoundException;
