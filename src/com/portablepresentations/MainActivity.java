@@ -69,6 +69,7 @@ public class MainActivity extends Activity {
     private boolean isNewSlide = false;
     private boolean isSaveCalled = false;
     private boolean isNewPres = false;
+    private boolean isLoad = false;
     private String savedName;
     
     //SCanvas variables
@@ -284,6 +285,7 @@ public class MainActivity extends Activity {
 					
 					Collections.sort(newSlideLst);
 					
+					//Adds a start for the selected slide
 					String sName = newSlideLst.get(arg2);
 					sName = "*" + sName;
 					
@@ -331,6 +333,14 @@ public class MainActivity extends Activity {
       		
       		if(mSCanvas.saveSAMMFile(savefName))
       		{
+      			if(isLoad)
+      			{
+      				isLoad = false;
+      				Intent intent = new Intent(MainActivity.this, DisplayFileActivity.class);
+      		    	intent.putExtra("option", "load");
+      		        startActivityForResult(intent, 1);
+      			}
+      			
       			if(!isSaved && isNewSlide  && !isNewPres)
       			{
       				refreshSlideList();
@@ -553,9 +563,12 @@ public class MainActivity extends Activity {
 				}
 			}
 			
-			newSlideLst.add("Slide " + newSlideLst.size());
+			//newSlideLst.add("*Slide " + newSlideLst.size());
 			
 			Collections.sort(newSlideLst);
+			
+			newSlideLst.add("*Slide " + newSlideLst.size());
+			
 			addItemsToList(newSlideLst, -1);
 			
 		}
@@ -583,8 +596,10 @@ public class MainActivity extends Activity {
     		screenCapture(savedName);
     	}
     	
-    	refreshSlideList();
-		
+    	if(!isNewPres)
+    	{
+    		refreshSlideList();
+    	}
     }
     
     /**
@@ -797,9 +812,40 @@ public class MainActivity extends Activity {
      */
     public void loadFile()
     {
-    	Intent intent = new Intent(MainActivity.this, DisplayFileActivity.class);
-    	intent.putExtra("option", "load");
-        startActivityForResult(intent, 1);
+    	AlertDialog.Builder alert= new AlertDialog.Builder(this);
+    	alert.setTitle("Load File");
+    	alert.setMessage("Do you want to save current changes?");
+    	
+    	alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				isLoad = true;
+				
+				if(!isSaved)
+		    	{
+		    		saveDialog();
+		    	}
+		    	else
+		    	{
+		    		screenCapture(savedName);
+		    	}
+			}
+		});
+    	
+    	alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				Intent intent = new Intent(MainActivity.this, DisplayFileActivity.class);
+		    	intent.putExtra("option", "load");
+		        startActivityForResult(intent, 1);
+				
+			}
+		});
+    	alert.show();
     }
     
     /**
@@ -980,6 +1026,10 @@ public class MainActivity extends Activity {
         	        	
         	        	Collections.sort(slideLst);
         	        	Collections.sort(list);
+        	        	
+        	        	String sName = slideLst.get(0);
+        	        	slideLst.remove(0);
+        	        	slideLst.add(0, "*" + sName);
         	        	
         	        	addItemsToList(slideLst, -1);
         	        	
