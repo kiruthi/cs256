@@ -74,8 +74,9 @@ public class MainActivity extends Activity {
     private RelativeLayout mCanvasContainer;
     private SCanvasView mSCanvas;
     private int animationSpeed;
+    private int lastMode;
     private SOptionSCanvas options;
-    AudioManager audioManager;
+    private AudioManager audioManager;
     private HashMap<String,Integer> settingResourceMapInt;
     
     @Override
@@ -117,9 +118,13 @@ public class MainActivity extends Activity {
                     @Override
                     //This method runs immediately after the animation finishes playing
                     public void onPlayComplete() {
-                        mSCanvas.recordVoiceComplete();
-                        mSCanvas.setBGAudioAsRecordedVoice();
+                        if (mSCanvas.isVoiceRecording()) {
+                            mSCanvas.recordVoiceComplete();
+                            mSCanvas.setBGAudioAsRecordedVoice();
+                        }
+                        
                         mSCanvas.setAnimationMode(false); //Enable drawing again
+                        mSCanvas.setCanvasMode(lastMode);
                         //audioManager.setSpeakerphoneOn(false);
                     }
                     
@@ -148,21 +153,22 @@ public class MainActivity extends Activity {
                     
                     @Override
                     public boolean onTouchFinger(View arg0, MotionEvent arg1) {
-                        // TODO Auto-generated method stub
-                        //Toast.makeText(MainActivity.this, "On Touch Finger", Toast.LENGTH_SHORT).show();
+                        if (mSCanvas.isAnimationMode())
+                            Toast.makeText(MainActivity.this, "Cannot edit in animation mode!", Toast.LENGTH_SHORT).show();
                         return false;
                     }
                     
                     @Override
                     public boolean onTouchPen(View arg0, MotionEvent arg1) {
-                        
+                        if (mSCanvas.isAnimationMode())
+                            Toast.makeText(MainActivity.this, "Cannot edit in animation mode!", Toast.LENGTH_SHORT).show();
                         return false;
                     }
                     
                     @Override
                     public boolean onTouchPenEraser(View arg0, MotionEvent arg1) {
-                        // TODO Auto-generated method stub
-                        //Toast.makeText(MainActivity.this, "On Touch Pen Eraser", Toast.LENGTH_SHORT).show();
+                        if (mSCanvas.isAnimationMode())
+                            Toast.makeText(MainActivity.this, "Cannot edit in animation mode!", Toast.LENGTH_SHORT).show();
                         return false;
                     }
                     
@@ -381,16 +387,19 @@ public class MainActivity extends Activity {
             	openGallery();
             	return true;
             case R.id.action2:
+                if (mSCanvas.getCanvasMode() == SCanvasConstants.SCANVAS_MODE_INPUT_TEXT)
+                    mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_TEXT);
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_TEXT);
-                mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_TEXT);
             	return true;
             case R.id.action3:
+                if (mSCanvas.getCanvasMode() == SCanvasConstants.SCANVAS_MODE_INPUT_PEN)
+                    mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_PEN);
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
-                mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_PEN);
                 return true;
             case R.id.action4:            	
+                if (mSCanvas.getCanvasMode() == SCanvasConstants.SCANVAS_MODE_INPUT_ERASER)
+                    mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_ERASER);
                 mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_ERASER);
-                mSCanvas.toggleShowSettingView(SCanvasConstants.SCANVAS_SETTINGVIEW_ERASER);
                 return true;
             case R.id.action5:
                 loadFile();
@@ -813,7 +822,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-            	mSCanvas.clearSCanvasView();
+            	mSCanvas.clearScreen();
+            	mSCanvas.clearBGAudio();
 			}
 		});
     	
@@ -1019,9 +1029,12 @@ public class MainActivity extends Activity {
     //Need to find a way to redo() after previewing the animation. Perhaps keep
     //a history of saveSammData()?.
     public void previewAnimation() {
+        lastMode = mSCanvas.getCanvasMode();
+        mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
         mSCanvas.setAnimationMode(true);
         mSCanvas.setAnimationSpeed(animationSpeed);
-        mSCanvas.doAnimationStart();
+        if (!mSCanvas.doAnimationStart())
+            mSCanvas.setCanvasMode(lastMode);
     }
     
     /**
