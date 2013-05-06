@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import com.samsung.samm.common.SAMMLibConstants;
 import com.samsung.samm.common.SObjectImage;
 import com.samsung.samm.common.SOptionPlay;
 import com.samsung.samm.common.SOptionSCanvas;
@@ -63,7 +64,7 @@ public class MainActivity extends Activity {
     private int slideNo = 0;
     private int maxSlideNo = 0;
     
-    //Presentation isSvaed and name variables
+    //Presentation isSaved and name variables
     private boolean isSaved = false;
     private boolean isNewSlide = false;
     private boolean isSaveCalled = false;
@@ -76,13 +77,11 @@ public class MainActivity extends Activity {
     private SOptionSCanvas options;
     AudioManager audioManager;
     private HashMap<String,Integer> settingResourceMapInt;
-   // private String saveFile;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-       
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
         
@@ -279,7 +278,6 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         
-        
         return true;
     }
     
@@ -405,10 +403,11 @@ public class MainActivity extends Activity {
                 clearDialog();
                 return true; 
             case R.id.action8:
-            	createNewSlide();
+            	//createNewSlide();
+                pauseResume();
             	return true;
             case R.id.action9:
-            	createNewPresentation();
+            	//createNewPresentation();
             	return true;          
             case R.id.options:
             	optionsDialog();
@@ -427,14 +426,19 @@ public class MainActivity extends Activity {
                 mSCanvas.ungroupSelectedObjects();
                 return true;*/
             case R.id.voiceOver:
-                audioManager.setSpeakerphoneOn(true); //This is not working?!
-                mSCanvas.clearBGAudio();
-                mSCanvas.setAnimationMode(true);
-                mSCanvas.recordVoiceStart();
-                previewAnimation();
+                if (!mSCanvas.isAnimationMode()) {
+                    audioManager.setSpeakerphoneOn(true);
+                    mSCanvas.clearBGAudio();
+                    mSCanvas.setAnimationMode(true);
+                    mSCanvas.recordVoiceStart();
+                    previewAnimation();
+                }
+                else
+                    Toast.makeText(MainActivity.this, "Can't record until animation is complete!", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.play:
-                previewAnimation();
+                if (!pauseResume())
+                    previewAnimation();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -809,7 +813,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-            	mSCanvas.clearScreen();
+            	mSCanvas.clearSCanvasView();
 			}
 		});
     	
@@ -1026,18 +1030,22 @@ public class MainActivity extends Activity {
             mSCanvas.setAnimationSpeed(++animationSpeed);
     }
     
-    public void pauseResume() {
-    	/*
+    /**
+     * Toggle pause/resume when doing animation playback
+     * @return true if pause/resume was successful.
+     */
+    public boolean pauseResume() {
     	int state = mSCanvas.getAnimationState();
         
         if (state == SAMMLibConstants.ANIMATION_STATE_ON_PAUSED) {
             mSCanvas.doAnimationResume();
-            ((TextView) findViewById(R.id.action6)).setText("Pause");
+            return true;
         }
         else if (state == SAMMLibConstants.ANIMATION_STATE_ON_RUNNING) {
             mSCanvas.doAnimationPause();
-            ((TextView) findViewById(R.id.action6)).setText("Resume");
+            return true;
         }
-        */
+        
+        return false;
     }
 }

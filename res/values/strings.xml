@@ -42,5 +42,7 @@
     <string name="selectorButtonTextString">Opens Selecter Tool</string>
     <string name="groupButtonTextString">Group selected  items into one item</string>
     <string name="ungroupButtonTextString">Ungroup selected item into seperate items</string>
+    <string name="slowText">Decrease Animation Speed</string>
+    <string name="fastText">Increase Animationn Speed</string>
 
 </resources>
