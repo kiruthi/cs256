@@ -222,11 +222,12 @@ public class MainActivity extends Activity {
     	
     	if(selectedSlideNo != -1)
     	{
-    		View selected = listView.getChildAt(selectedSlideNo);
+//    		View selected = listView.getChildAt(selectedSlideNo);
+    		View selected = adapter.getView(selectedSlideNo, null, null);
     		
     		if(null != selected)
     		{
-    			selected.setBackgroundColor(Color.LTGRAY);
+//    			selected.setBackgroundColor(Color.LTGRAY);
     		}
     	}
     	
@@ -238,6 +239,13 @@ public class MainActivity extends Activity {
 				
 				String fn;
 		    	String[] fnSplit;
+		    	
+		    	View selected = arg0.getChildAt(arg2);
+	    		
+	    		if(null != selected)
+	    		{
+//	    			selected.setBackgroundColor(Color.LTGRAY);
+	    		}
 				
 				if(isSaved)
 				{
@@ -275,6 +283,13 @@ public class MainActivity extends Activity {
 					}
 					
 					Collections.sort(newSlideLst);
+					
+					String sName = newSlideLst.get(arg2);
+					sName = "*" + sName;
+					
+					newSlideLst.remove(arg2);
+					newSlideLst.add(arg2, sName);
+					
 					addItemsToList(newSlideLst, arg2);
 				}
 			}
