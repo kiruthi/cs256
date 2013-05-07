@@ -924,8 +924,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
-            	mSCanvas.clearScreen();
-            	mSCanvas.clearBGAudio();
+            	mSCanvas.clearSCanvasView();
+            	//mSCanvas.clearBGAudio();
 			}
 		});
     	
@@ -1172,6 +1172,9 @@ public class MainActivity extends Activity {
     //a history of saveSammData()?.
     public void previewAnimation() {
         lastMode = mSCanvas.getCanvasMode();
+        String SAMMData = mSCanvas.saveSAMMData();
+        mSCanvas.clearScreen();
+        mSCanvas.loadSAMMData(SAMMData);
         mSCanvas.setCanvasMode(SCanvasConstants.SCANVAS_MODE_INPUT_PEN);
         mSCanvas.setAnimationMode(true);
         mSCanvas.setAnimationSpeed(animationSpeed);
