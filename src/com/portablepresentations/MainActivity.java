@@ -1056,41 +1056,54 @@ public class MainActivity extends Activity {
 	        	    			Toast.makeText(MainActivity.this, "File Loaded!", Toast.LENGTH_LONG).show();
 	        	    		}
         	        	}
-        	    	}
-        	    	
+        	    	}        	    	
         			break;
         			
         		case 2://Exporting Project files to png
+        			
+        			//save current sldie if project is saved
+        			if(isSaved)
+	        	    {
+	        			screenCapture(savedName);
+        	    	}
+					
+        			//load exporting project out
         			String dirPath = data.getStringExtra("dirPath"); 
         			int dirNum = data.getIntExtra("dir", 0);
-        	    	
+        			File directory	= new File(dirPath);
+        			String dirName = directory.getName();
+        			File[] files = directory.listFiles();
+        			 int size = files.length;
+        	    	 File file;
+        			
+    	    		
         	    	if(dirNum == -1)
         	    	{
         	    		Toast.makeText(MainActivity.this, "No Saved Projects Found!", Toast.LENGTH_LONG).show();
         	    	}
         	    	else
-        	    	{
-        	    		File directory	= new File(dirPath);
-            			String dirName = directory.getName();
-            	    	File[] files = directory.listFiles();
+        	    	{   	    			
             	    
         	        	if (files != null)
         	        	{
+        	        		//export project is loaded
+        	        		savedName = dirName;
+        	        		isSaved =true;
+        	    			slideNo = 0;
+        	    			maxSlideNo = size -1;
+        	        		
         	        		Toast t = Toast.makeText(getApplicationContext(), "Exporting Now. Please Wait.", Toast.LENGTH_SHORT);
         	        		t.show();
-        	        	    for (File file : files)
+        	        	    for (int i = 0; i<size;i++)
         	        	    {
+        	        	    	file = files[i];
         	        	    	mSCanvas.loadSAMMFile(directory.getAbsolutePath() + "/" + file.getName(),true);
+        	        	    	slideNo=i;
         	        	    	exportFile(dirName+file.getName());
         	        	    }
-        	        	}	
-        	        	else
-        	        	{
-        	        		Toast t = Toast.makeText(getApplicationContext(), "No Files in Project. Please check project.", Toast.LENGTH_SHORT);
-        	        		t.show();
         	        	}
+        	        	refreshSlideList();
         	    	}
-        			
         			break;
         			
         		case 3:
@@ -1128,7 +1141,7 @@ public class MainActivity extends Activity {
         			}
         			
         			break;
-        			
+        		        			
         	    case 1234: //Loading a picture to the canvas
         	        Uri pictureUri = data.getData();
         			try {
