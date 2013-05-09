@@ -96,8 +96,6 @@ public class MainActivity extends Activity {
         content.setDrawingCacheEnabled(true);
         
         animationSpeed = SOptionPlay.ANIMATION_SPEED_SLOW;
-        options = new SOptionSCanvas();
-        options.mPlayOption.setSoundEffectOption(false); //Disable artificial sound effects
         mCanvasContainer = (RelativeLayout) findViewById(R.id.canvas_container);
         mSCanvas = new SCanvasView(this);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -105,7 +103,6 @@ public class MainActivity extends Activity {
         //Initialize resources to enable color picker
         settingResourceMapInt = new HashMap<String, Integer>();
         settingResourceMapInt.put(SCanvasConstants.LAYOUT_PEN_SPINNER, R.layout.activity_main);
-        mSCanvas.createSettingView(mCanvasContainer, settingResourceMapInt);
         
         mSCanvas.setSCanvasInitializeListener(new SCanvasInitializeListener() {
             @Override
@@ -114,22 +111,35 @@ public class MainActivity extends Activity {
             //the options outside will result in the default behavior because the
             //option was never properly applied.
             public void onInitialized() {
-                mSCanvas.setTitle("SPen PowerPoint App");
+            	//set title of canvas
+                mSCanvas.setTitle("SPen Portable Presentation App");
+                
+                //set Options
+                options = new SOptionSCanvas();
+                options.mPlayOption.setSoundEffectOption(false); //Disable artificial sound effects
                 mSCanvas.setOption(options);
-                mSCanvas.setAnimationProcessListener(new AnimationProcessListener() {
-                    @Override
-                    //This method runs immediately after the animation finishes playing
-                    public void onPlayComplete() {
-                        if (mSCanvas.isVoiceRecording()) {
-                            mSCanvas.recordVoiceComplete();
-                            mSCanvas.setBGAudioAsRecordedVoice();
-                        }
-                        
-                        mSCanvas.setAnimationMode(false); //Enable drawing again
-                        mSCanvas.setCanvasMode(lastMode);
-                        //audioManager.setSpeakerphoneOn(false);
-                    }
-                    
+                
+
+                mSCanvas.createSettingView(mCanvasContainer, settingResourceMapInt);
+                
+                //change background to white
+                mSCanvas.setBackgroundColor(Color.WHITE);
+                mSCanvas.setBGColor(Color.WHITE);
+                 
+	             mSCanvas.setAnimationProcessListener(new AnimationProcessListener() {
+	                @Override
+	                //This method runs immediately after the animation finishes playing
+	                public void onPlayComplete() {
+	                    if (mSCanvas.isVoiceRecording()) {
+	                        mSCanvas.recordVoiceComplete();
+	                        mSCanvas.setBGAudioAsRecordedVoice();
+	                    }
+	                    
+	                    mSCanvas.setAnimationMode(false); //Enable drawing again
+	                    mSCanvas.setCanvasMode(lastMode);
+	                    //audioManager.setSpeakerphoneOn(false);
+	                }
+	                
                     @Override
                     //This method runs after each stroke is completed. As of this time
                     //I'm not sure how adding other drawable objects to the SCanvas effects
@@ -198,10 +208,6 @@ public class MainActivity extends Activity {
         
         
         mCanvasContainer.addView(mSCanvas);
-        
-      //change background to white
-        mSCanvas.setBackgroundColor(Color.WHITE);
-        mSCanvas.setBGColor(Color.WHITE);
         
         List<String> slideLst = new ArrayList<String>();
         slideLst.add("Slide 0");
