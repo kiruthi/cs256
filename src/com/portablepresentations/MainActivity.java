@@ -96,7 +96,8 @@ public class MainActivity extends Activity {
         content.setDrawingCacheEnabled(true);
         
         animationSpeed = SOptionPlay.ANIMATION_SPEED_SLOW;
-        mCanvasContainer = (RelativeLayout) findViewById(R.id.canvas_container);
+        //mCanvasContainer = (RelativeLayout) findViewById(R.id.canvas_container);
+        mCanvasContainer = (RelativeLayout) content;
         mSCanvas = new SCanvasView(this);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         
