@@ -977,6 +977,7 @@ public class MainActivity extends Activity {
 			outStream.close();*/
     		
     		mSCanvas.saveSAMMFile(Environment.getExternalStorageDirectory().getPath()+"/"+fileName);
+    		
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1098,9 +1099,7 @@ public class MainActivity extends Activity {
         	        		isSaved =true;
         	    			slideNo = 0;
         	    			maxSlideNo = size -1;
-        	        		
-        	        		Toast t = Toast.makeText(getApplicationContext(), "Exporting Now. Please Wait.", Toast.LENGTH_SHORT);
-        	        		t.show();
+        	    			
         	        	    for (int i = 0; i<size;i++)
         	        	    {
         	        	    	file = files[i];
@@ -1109,7 +1108,23 @@ public class MainActivity extends Activity {
         	        	    	exportFile(dirName+file.getName());
         	        	    }
         	        	}
-        	        	refreshSlideList();
+        	        	
+        	        	//refreshSlideList();
+        	        	//createNewPresentation();
+        	        	savedName = "";
+        		    	isSaved = false;
+        		    	slideNo = 0;
+        		    	maxSlideNo = 0;
+        		    	
+        		    	mSCanvas.clearScreen();
+        		    	
+        		    	List<String> slideLst = new ArrayList<String>();
+        		        slideLst.add("Slide 0");
+        		        
+        		        addItemsToList(slideLst, -1);
+        		        
+        		        Toast t = Toast.makeText(getApplicationContext(), "Project Exported. New presentaion now open.", Toast.LENGTH_SHORT);
+    	        		t.show();
         	    	}
         			break;
         			
